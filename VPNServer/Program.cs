@@ -1,32 +1,20 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using VPNServer.Utils;
 
 namespace VPNServer
 {
-    internal class Program
+    public class Program
     {
-        static async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
-            Process process = new Process
+            do
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "bash",
-                    RedirectStandardInput = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false
-                }
-            };
-            process.Start();
-            await process.StandardInput.WriteLineAsync("echo pass | sudo -S wg");
-
-            string? output;
-            while ((output = await process.StandardOutput.ReadLineAsync()) != null)
-            {
-                Console.WriteLine($"{output}");
-            }
+                IEnumerable<string> result = await ConsoleUtils.ExecuteCommand("wg");
+                foreach (string s in result)
+                    Console.WriteLine(s);
+                Thread.Sleep(1000);
+            } while (true);
 
             Console.ReadLine();
         }
