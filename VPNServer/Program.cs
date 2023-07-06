@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using VPNServer.Classes;
 using VPNServer.Utils;
 
@@ -6,8 +7,6 @@ namespace VPNServer
 {
     public class Program
     {
-        private static IEnumerable<Peer> ConnectedPeers = new List<Peer>();
-
         public static async Task Main(string[] args)
         {
             Thread peerUpdateThread = new Thread(StartPeerUpdateThread);
@@ -22,8 +21,8 @@ namespace VPNServer
             {
                 Console.WriteLine("Update");
                 IEnumerable<string> result = await CommandUtils.ExecuteCommandWithOutput("wg");
-                ConnectedPeers = ParsingUtils.ParsePeersFromWG(result);
-                foreach (Peer peer in ConnectedPeers)
+                IEnumerable <Peer> peers = ParsingUtils.ParsePeersFromWG(result);
+                foreach (Peer peer in peers)
                     if ((DateTime.Now - peer.LatestHandshakeTimestamp).TotalSeconds > 10)
                         await CommandUtils.RemovePeer(peer);
 
