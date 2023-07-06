@@ -3,14 +3,14 @@ using VPNServer.Utils;
 
 namespace VPNServer.Classes
 {
-    internal class Peer
+    public class Peer
     {
-        public byte[] PublicKey { get; set; }
-        public IPAddress AllowedIPs { get; set; }
-        public DateTime LatestHandshakeTimestamp { get; set; }
+        public byte[] PublicKey { get; set; } = Array.Empty<byte>();
+        public IPAddress IPAddress { get; set; } = IPAddress.None;
+        public DateTime LatestHandshakeTimestamp { get; set; } = DateTime.MinValue;
 
-        public bool EqualToPeer(Peer peer) => ProgramUtils.UnsafeCompare(PublicKey, peer.PublicKey);
+        public bool IsPeerKeyEqual(Peer peer) => ProgramUtils.UnsafeCompare(PublicKey, peer.PublicKey);
 
-        public override string ToString() => $"Peer: {Convert.ToBase64String(PublicKey)}, {AllowedIPs}, {LatestHandshakeTimestamp}";
+        public override string ToString() => $"Peer: {Convert.ToBase64String(PublicKey)}, {IPAddress}, {LatestHandshakeTimestamp}";
     }
 }

@@ -1,24 +1,40 @@
-﻿using VPNServer.Classes;
+﻿using System.Net;
+using VPNServer.Classes;
 using VPNServer.Utils;
 
 namespace VPNServer
 {
     public class Program
     {
-        private static List<Peer> ConnectedPeers = new();
+        private static IEnumerable<Peer> ConnectedPeers = new List<Peer>();
 
         public static async Task Main(string[] args)
         {
-            do
-            {
-                IEnumerable<string> result = await ConsoleUtils.ExecuteCommand("wg");
-                IEnumerable<Peer> peers = ParsingUtils.ParsePeersFromWG(result);
-                foreach(Peer peer in peers)
-                    Console.WriteLine(peer.ToString());
-                Thread.Sleep(1000);
-            } while (true);
+            Thread peerUpdateThread = new Thread(StartPeerUpdateThread);
+            peerUpdateThread.Start();
 
             Console.ReadLine();
+        }
+
+        private static async void StartPeerUpdateThread()
+        {
+            do
+            {
+                Console.WriteLine("Update");
+                IEnumerable<string> result = await CommandUtils.ExecuteCommandWithOutput("wg");
+                ConnectedPeers = ParsingUtils.ParsePeersFromWG(result);
+                foreach (Peer peer in ConnectedPeers)
+                    if ((DateTime.Now - peer.LatestHandshakeTimestamp).TotalSeconds > 10)
+                        await CommandUtils.RemovePeer(peer);
+
+                await CommandUtils.AddPeer(new Peer
+                {
+                    PublicKey = Convert.FromBase64String("iheCCfc8tsQVof3eOru6d/MiOeFlG11p5vYF9PlLXCY="),
+                    IPAddress = IPAddress.Parse("10.66.66.2")
+                });
+
+                Thread.Sleep(15000);//180000
+            } while (true);
         }
     }
 }

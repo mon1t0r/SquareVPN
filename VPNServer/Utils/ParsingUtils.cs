@@ -3,7 +3,7 @@ using VPNServer.Classes;
 
 namespace VPNServer.Utils
 {
-    internal class ParsingUtils
+    public class ParsingUtils
     {
         public static IEnumerable<Peer> ParsePeersFromWG(IEnumerable<string> inputLines)
         {
@@ -34,7 +34,7 @@ namespace VPNServer.Utils
                 {
                     IPAddress? ipAddress;
                     if (IPAddress.TryParse(str.Replace("allowed ips:", null).Replace("/32", null).Trim(), out ipAddress))
-                        curPeer.AllowedIPs = ipAddress;
+                        curPeer.IPAddress = ipAddress;
                     continue;
                 }
                 if (str.StartsWith("latest handshake:"))
