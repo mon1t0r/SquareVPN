@@ -9,7 +9,7 @@ namespace WebAPI.Models
     {
         [Required, Key, Column("user_id")]
         public ulong Id { get; set; }
-        [Required, Column("last_payment")]
-        public ulong LastPaymentTimeStamp { get; set; }
+        [Required, Column("paid_until")]
+        public ulong PaidUntilTimeStamp { get; set; }
     }
 }
