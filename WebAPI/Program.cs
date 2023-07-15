@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
+using WebAPI.Relays;
+using WebAPI.Relays.ControlServer;
+using WebAPI.Relays.ControlServer.Packet;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,5 +31,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+RelayManager.Initialize();
+PacketManager.RegisterPackets();
+ControlServerManager.InitializeServer(int.Parse(builder.Configuration["ControlServerPort"]));
 
 app.Run();

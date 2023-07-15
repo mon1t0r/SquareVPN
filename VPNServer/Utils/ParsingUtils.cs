@@ -34,7 +34,7 @@ namespace VPNServer.Utils
                 {
                     IPAddress? ipAddress;
                     if (IPAddress.TryParse(str.Replace("allowed ips:", null).Replace("/32", null).Trim(), out ipAddress))
-                        curPeer.IPAddress = ipAddress;
+                        curPeer.IPV4Address = ipAddress;
                     continue;
                 }
                 if (str.StartsWith("latest handshake:"))

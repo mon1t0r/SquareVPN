@@ -1,15 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using VPNServer.Classes;
+using VPNServer.RelayControl;
+using VPNServer.RelayControl.Packet;
 using VPNServer.Utils;
 
 namespace VPNServer
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            Thread peerUpdateThread = new Thread(StartPeerUpdateThread);
+            Config.Initialize();
+            PacketManager.RegisterPackets();
+            ControlClientManager.InitializeClient(Config.Instance.ControlServerAddress, Config.Instance.ControlServerPort);
+
+            Thread peerUpdateThread = new(StartPeerUpdateThread);
             peerUpdateThread.Start();
 
             Console.ReadLine();
@@ -25,12 +31,6 @@ namespace VPNServer
                 foreach (Peer peer in peers)
                     if ((DateTime.Now - peer.LatestHandshakeTimestamp).TotalSeconds > 10)
                         await CommandUtils.RemovePeer(peer);
-
-                await CommandUtils.AddPeer(new Peer
-                {
-                    PublicKey = Convert.FromBase64String("iheCCfc8tsQVof3eOru6d/MiOeFlG11p5vYF9PlLXCY="),
-                    IPAddress = IPAddress.Parse("10.66.66.2")
-                });
 
                 Thread.Sleep(15000);//180000
             } while (true);

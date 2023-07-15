@@ -45,14 +45,14 @@ namespace VPNServer.Utils
 
         public static async Task AddPeer(Peer peer)
         {
-            await ExecuteCommand($"wg set wg0 peer \"{Convert.ToBase64String(peer.PublicKey)}\" allowed-ips {peer.IPAddress}/32");
-            await ExecuteCommand($"ip -4 route add {peer.IPAddress}/32 dev wg0");
+            await ExecuteCommand($"wg set wg0 peer \"{Convert.ToBase64String(peer.PublicKey)}\" allowed-ips {peer.IPV4Address}/32");
+            await ExecuteCommand($"ip -4 route add {peer.IPV4Address}/32 dev wg0");
         }
 
         public static async Task RemovePeer(Peer peer)
         {
             await ExecuteCommand($"wg set wg0 peer \"{Convert.ToBase64String(peer.PublicKey)}\" remove");
-            await ExecuteCommand($"ip -4 route delete {peer.IPAddress}/32 dev wg0");
+            await ExecuteCommand($"ip -4 route delete {peer.IPV4Address}/32 dev wg0");
         }
     }
 }
