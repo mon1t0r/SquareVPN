@@ -32,7 +32,7 @@ namespace VPNServer
                     if ((DateTime.Now - peer.LatestHandshakeTimestamp).TotalSeconds > 10)
                         await CommandUtils.RemovePeer(peer);
 
-                Thread.Sleep(15000);//180000
+                Thread.Sleep(180000);//180000
             } while (true);
         }
     }

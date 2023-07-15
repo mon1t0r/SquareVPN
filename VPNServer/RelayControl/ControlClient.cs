@@ -1,5 +1,6 @@
 ﻿using NetCoreServer;
 using System.Text;
+using VPNServer.RelayControl.Packet;
 
 namespace VPNServer.RelayControl
 {
@@ -26,10 +27,8 @@ namespace VPNServer.RelayControl
                 ConnectAsync();
         }
 
-        protected override void OnReceived(byte[] buffer, long offset, long size)
-        {
-            Console.WriteLine(Encoding.UTF8.GetString(buffer, (int)offset, (int)size));
-        }
+        protected override void OnReceived(byte[] buffer, long offset, long size) =>
+            PacketManager.HandleRelayPacket(new BinaryReader(new MemoryStream(buffer, (int)offset, (int)size)));
 
         protected override void OnError(System.Net.Sockets.SocketError error) =>
             Console.WriteLine($"Relay TCP client caught an error with code {error}");

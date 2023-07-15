@@ -34,6 +34,7 @@ namespace WebAPI.Relays.ControlServer.Packet
                 {
                     object decoded = packet.Decode(data);
                     Thread packetThread = new(() => packet.Handle(decoded));
+                    packetThread.Start();
 
                     if (data.BaseStream.Position < data.BaseStream.Length)
                         HandleServerPacket(data);
