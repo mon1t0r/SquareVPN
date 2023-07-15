@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using WebAPI.Models;
@@ -10,6 +11,7 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly WebContext _context;
@@ -19,7 +21,7 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             if (_context.Users == null)
@@ -38,15 +40,15 @@ namespace WebAPI.Controllers
                 return NotFound();
 
             return user;
-        }
+        }*/
 
-        [HttpPost]
-        public async Task<ActionResult<User>> ConnectUser(ulong id)
+        [HttpPost("/connectUser")]
+        public async Task<ActionResult<User>> ConnectUser()
         {
             if (_context.Users == null)
                 return NotFound();
 
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FindAsync(Guid.Parse(User.Identity.Name));
 
             if (user == null)
                 return NotFound();

@@ -7,7 +7,9 @@ namespace WebAPI.Models
     [Table("User")]
     public class User
     {
-        [Required, Key, Column("user_id")]
+        [Required, Key, Column("user_uuid")]
+        public Guid UUID { get; set; }
+        [Required, Column("user_id")]
         public ulong Id { get; set; }
         [Required, Column("paid_until")]
         public ulong PaidUntilTimeStamp { get; set; }
