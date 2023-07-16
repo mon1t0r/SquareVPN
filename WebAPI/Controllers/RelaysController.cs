@@ -5,7 +5,7 @@ using WebAPI.Models;
 using WebAPI.Relays;
 using WebAPI.Relays.ControlServer.Packet;
 using WebAPI.Relays.ControlServer.Packet.Type;
-using WebAPI.Relays.Type;
+using WebAPI.Relays.Type.Server;
 
 namespace WebAPI.Controllers
 {
@@ -21,8 +21,8 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-        [HttpPost("connectPeer")]
-        public async Task<ActionResult<User>> ConnectPeer(string hostname)
+        [HttpPost("connect-peer")]
+        public async Task<ActionResult<User>> ConnectPeer([FromForm] string hostname)
         {
             if (_context.Devices == null)
                 return NotFound();

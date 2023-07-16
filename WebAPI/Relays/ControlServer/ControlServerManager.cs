@@ -1,6 +1,6 @@
 ﻿using NetCoreServer;
 using System.Net;
-using WebAPI.Relays.Type;
+using WebAPI.Relays.Type.Server;
 
 namespace WebAPI.Relays.ControlServer
 {

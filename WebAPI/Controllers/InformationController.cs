@@ -10,7 +10,7 @@ namespace WebAPI.Controllers
         [HttpGet("relays")]
         public async Task<ActionResult<string>> GetRelays()
         {
-            return RelayManager.CountriesJson;
+            return RelayManager.ClientCountriesJson;
         }
     }
 }

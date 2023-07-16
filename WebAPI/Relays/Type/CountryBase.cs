@@ -2,13 +2,11 @@
 
 namespace WebAPI.Relays.Type
 {
-    public class Country
+    public abstract class CountryBase
     {
         [JsonProperty("name")]
         public string Name { get; set; }
         [JsonProperty("code")]
         public string CountryCode { get; set; }
-        [JsonProperty("cities")]
-        public List<City> Cities { get; set; }
     }
 }

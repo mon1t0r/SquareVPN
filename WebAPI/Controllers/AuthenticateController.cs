@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("create-device")]
-        public async Task<IActionResult> CreateDevice(ulong userId, string publicKey)
+        public async Task<IActionResult> CreateDevice([FromForm] ulong userId, [FromForm] string publicKey)
         {
             if (string.IsNullOrWhiteSpace(publicKey))
                 return BadRequest("Invalid client request");
@@ -104,7 +104,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken(string accessToken, string refreshToken)
+        public async Task<IActionResult> RefreshToken([FromForm] string accessToken, [FromForm] string refreshToken)
         {
             if (string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(refreshToken))
                 return BadRequest("Invalid client request");

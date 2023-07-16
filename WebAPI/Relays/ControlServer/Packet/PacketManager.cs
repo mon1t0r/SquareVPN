@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using WebAPI.Relays.ControlServer.Packet.Type;
-using WebAPI.Relays.Type;
+using WebAPI.Relays.Type.Server;
 
 namespace WebAPI.Relays.ControlServer.Packet
 {
