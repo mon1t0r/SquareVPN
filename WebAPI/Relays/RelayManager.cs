@@ -6,11 +6,13 @@ namespace WebAPI.Relays
 {
     public class RelayManager
     {
+        public static string CountriesJson { get; private set; }
         public static List<Country> Countries { get; private set; }
         public static List<Relay> Relays { get; private set; }
 
         public static void Initialize()
         {
+            CountriesJson = File.ReadAllText("relays.json");
             var settings = new JsonSerializerSettings
             {
                 Converters =
@@ -18,7 +20,7 @@ namespace WebAPI.Relays
                     new IPAddressJsonConverter()
                 }
             };
-            Countries = JsonConvert.DeserializeObject<List<Country>>(File.ReadAllText("relays.json"), settings);
+            Countries = JsonConvert.DeserializeObject<List<Country>>(CountriesJson, settings);
             if(Countries == null)
                 throw new Exception("Relay list was null.");
 

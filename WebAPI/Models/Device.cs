@@ -5,13 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WebAPI.Models
 {
     [Table("Device")]
-    [PrimaryKey(nameof(UserUUID), nameof(UUID))]
+    [PrimaryKey(nameof(UUID))]
     public class Device
     {
-        [Required, Column("user_uuid")]
-        public Guid UserUUID { get; set; }
         [Column("device_uuid")]
         public Guid UUID { get; set; }
+        [Required, Column("user_uuid")]
+        public Guid UserUUID { get; set; }
         [Column("ipv4_address"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string IPV4Address { get; set; }
         [Required, Column("name")]

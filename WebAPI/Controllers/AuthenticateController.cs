@@ -98,14 +98,12 @@ namespace WebAPI.Controllers
             if (_context.Devices == null)
                 return NotFound();
 
-            Guid deviceUUID = Guid.Parse(User.Identity.Name);
-            var device = await _context.Devices.FirstOrDefaultAsync((device) => device.UUID == deviceUUID);
+            var device = await _context.Devices.FindAsync(Guid.Parse(User.Identity.Name));
 
             if (device == null)
                 return NotFound();
 
-            device.RefreshToken = null;
-
+            _context.Devices.Remove(device);
             await _context.SaveChangesAsync();
 
             return Ok();
@@ -124,10 +122,9 @@ namespace WebAPI.Controllers
             if (_context.Devices == null)
                 return NotFound();
 
-            Guid deviceUUID = Guid.Parse(principal.Identity.Name);
-            var device = await _context.Devices.FirstOrDefaultAsync((device) => device.UUID == deviceUUID);
+            var device = await _context.Devices.FindAsync(Guid.Parse(principal.Identity.Name));
 
-            if (device == null || device.RefreshToken != refreshToken )
+            if (device == null || device.RefreshToken != refreshToken)
                 return BadRequest("Invalid access token or refresh token");
 
             var newAccessToken = CreateAccessToken(principal.Claims.ToList());

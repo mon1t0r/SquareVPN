@@ -7,14 +7,14 @@
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `device` (
-  `user_uuid` char(36) NOT NULL,
   `device_uuid` char(36) NOT NULL,
+  `user_uuid` char(36) NOT NULL,
   `ipv4_address` varchar(15) NOT NULL DEFAULT '0',
   `name` varchar(45) NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `public_key` char(44) NOT NULL,
   `refresh_token` varchar(90) DEFAULT NULL,
-  PRIMARY KEY (`user_uuid`,`device_uuid`),
+  PRIMARY KEY (`device_uuid`),
   UNIQUE KEY `public_key_UNIQUE` (`public_key`),
   UNIQUE KEY `device_uuid_UNIQUE` (`device_uuid`),
   UNIQUE KEY `ipv4_address_UNIQUE` (`ipv4_address`)
