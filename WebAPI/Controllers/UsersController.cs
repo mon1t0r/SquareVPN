@@ -43,12 +43,13 @@ namespace WebAPI.Controllers
         }*/
 
         [HttpPost("/connectPeer")]
-        public async Task<ActionResult<User>> ConnectPeer(string deviceUUID)
+        public async Task<ActionResult<User>> ConnectPeer()
         {
             if (_context.Devices == null)
                 return NotFound();
 
-            var device = await _context.Devices.FindAsync(Guid.Parse(User.Identity.Name), Guid.Parse(deviceUUID));
+            var deviceUUID = Guid.Parse(User.Identity.Name);
+            var device = await _context.Devices.FirstOrDefaultAsync((device) => device.UUID == deviceUUID);
 
             if (device == null)
                 return NotFound();

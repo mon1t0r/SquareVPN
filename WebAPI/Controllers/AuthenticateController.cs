@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.IdentityModel.Tokens;
 using NuGet.Common;
 using System;
@@ -11,6 +13,7 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using WebAPI.Models;
+using WebAPI.Utils;
 
 namespace WebAPI.Controllers
 {
@@ -27,20 +30,30 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(ulong userId)
+        [HttpPost("create-device")]
+        public async Task<IActionResult> CreateDevice(ulong userId, string publicKey)
         {
+            if (string.IsNullOrWhiteSpace(publicKey))
+                return BadRequest("Invalid client request");
+
             if (_context.Users == null)
                 return NotFound();
 
-            var user = _context.Users.Where(c => c.Id == userId).FirstOrDefault();
+            var user = await _context.Users.FirstOrDefaultAsync(c => c.Id == userId);
 
             if (user == null)
                 return NotFound();
 
+            int deviceCount = await _context.Devices.Where((device) => device.UserUUID == user.UUID).CountAsync();
+
+            if (deviceCount >= int.Parse(_config["MaxDevicesPerUser"]))
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Device limit reached" });
+
+            var deviceUUID = Guid.NewGuid();
+
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UUID.ToString())
+                new Claim(ClaimTypes.Name, deviceUUID.ToString())
             };
 
             var accessToken = CreateAccessToken(authClaims);
@@ -48,33 +61,50 @@ namespace WebAPI.Controllers
 
             int refreshTokenLifeTime = int.Parse(_config["JWT:RefreshLifeTimeInDays"]);
 
-            user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiry = DateTime.Now.AddDays(refreshTokenLifeTime);
+            Device device = new Device
+            {
+                UUID = deviceUUID,
+                UserUUID = user.UUID,
+                PublicKey = publicKey,
+                Name = DeviceNames.GetRandomName(),
 
+                IPV4Address = string.Empty,
+                CreatedTimeStamp = DateTime.Now,
+                RefreshToken = refreshToken
+            };
+
+            var deviceEntry = await _context.Devices.AddAsync(device);
             await _context.SaveChangesAsync();
+            await deviceEntry.ReloadAsync();
 
             var response = new
             {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
-                RefreshToken = refreshToken
+                RefreshToken = refreshToken,
+                Device = new
+                {
+                    Name = device.Name,
+                    IPV4Address = device.IPV4Address
+                }
             };
 
             return Json(response);
         }
 
-        [HttpPost("logout")]
+        [HttpPost("remove-device")]
         [Authorize]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> RemoveDevice()
         {
-            if (_context.Users == null)
+            if (_context.Devices == null)
                 return NotFound();
 
-            var user = await _context.Users.FindAsync(Guid.Parse(User.Identity.Name));
+            Guid deviceUUID = Guid.Parse(User.Identity.Name);
+            var device = await _context.Devices.FirstOrDefaultAsync((device) => device.UUID == deviceUUID);
 
-            if (user == null)
+            if (device == null)
                 return NotFound();
 
-            user.RefreshToken = null;
+            device.RefreshToken = null;
 
             await _context.SaveChangesAsync();
 
@@ -91,18 +121,19 @@ namespace WebAPI.Controllers
             if (principal == null)
                 return BadRequest("Invalid access token or refresh token");
 
-            if (_context.Users == null)
+            if (_context.Devices == null)
                 return NotFound();
 
-            var user = await _context.Users.FindAsync(Guid.Parse(principal.Identity.Name));
+            Guid deviceUUID = Guid.Parse(principal.Identity.Name);
+            var device = await _context.Devices.FirstOrDefaultAsync((device) => device.UUID == deviceUUID);
 
-            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiry <= DateTime.Now)
+            if (device == null || device.RefreshToken != refreshToken )
                 return BadRequest("Invalid access token or refresh token");
 
             var newAccessToken = CreateAccessToken(principal.Claims.ToList());
             var newRefreshToken = CreateRefreshToken(64);
 
-            user.RefreshToken = newRefreshToken;
+            device.RefreshToken = newRefreshToken;
             await _context.SaveChangesAsync();
 
             var response = new

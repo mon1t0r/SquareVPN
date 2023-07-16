@@ -8,11 +8,12 @@
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `device` (
   `user_uuid` char(36) NOT NULL,
-  `device_uuid` char(36) NOT NULL DEFAULT '0',
+  `device_uuid` char(36) NOT NULL,
   `ipv4_address` varchar(15) NOT NULL DEFAULT '0',
   `name` varchar(45) NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `public_key` char(44) NOT NULL,
+  `refresh_token` varchar(90) DEFAULT NULL,
   PRIMARY KEY (`user_uuid`,`device_uuid`),
   UNIQUE KEY `public_key_UNIQUE` (`public_key`),
   UNIQUE KEY `device_uuid_UNIQUE` (`device_uuid`),
@@ -29,14 +30,6 @@ CREATE TABLE `device` (
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER `device_BEFORE_INSERT` BEFORE INSERT ON `device` FOR EACH ROW BEGIN
-	DECLARE uuid CHAR(36) DEFAULT '';
-
-	WHILE (uuid = '' OR EXISTS (SELECT `device_uuid` FROM `device` where `device`.`device_uuid` = uuid)) DO
-		SET uuid = UUID();
-	END WHILE;
-  
-	SET NEW.`device_uuid` = uuid;
-    
     SET NEW.`ipv4_address` = INET_NTOA((SELECT `ipv4_counter` FROM `static` LIMIT 1));
     UPDATE `static` SET `ipv4_counter` = `ipv4_counter` + 1 WHERE `index` = 1;
 END */;;
@@ -59,9 +52,7 @@ CREATE TABLE `static` (
 CREATE TABLE `user` (
   `user_uuid` char(36) NOT NULL DEFAULT '0',
   `user_id` bigint unsigned NOT NULL DEFAULT '0',
-  `paid_until` bigint unsigned NOT NULL DEFAULT '0',
-  `refresh_token` varchar(90) DEFAULT NULL,
-  `refresh_token_expiry` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `paid_until` timestamp NOT NULL DEFAULT '2000-12-31 22:00:01',
   PRIMARY KEY (`user_uuid`),
   UNIQUE KEY `public_id_UNIQUE` (`user_id`),
   UNIQUE KEY `user_uuid_UNIQUE` (`user_uuid`)

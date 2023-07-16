@@ -7,15 +7,11 @@ namespace WebAPI.Models
     [Table("User")]
     public class User
     {
-        [Required, Key, Column("user_uuid")]
+        [Key, Column("user_uuid"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid UUID { get; set; }
-        [Required, Column("user_id")]
+        [Column("user_id"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public ulong Id { get; set; }
-        [Required, Column("paid_until")]
-        public ulong PaidUntilTimeStamp { get; set; }
-        [Column("refresh_token")]
-        public string? RefreshToken { get; set; }
-        [Required, Column("refresh_token_expiry")]
-        public DateTime RefreshTokenExpiry { get; set; }
+        [Column("paid_until"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public DateTime PaidUntilTimeStamp { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using WebAPI.Models;
 using WebAPI.Relays;
 using WebAPI.Relays.ControlServer;
 using WebAPI.Relays.ControlServer.Packet;
+using WebAPI.Utils;
 
 namespace HelloApp
 {
@@ -25,6 +26,7 @@ namespace HelloApp
 
             RelayManager.Initialize();
             PacketManager.RegisterPackets();
+            DeviceNames.Initialize();
             ControlServerManager.InitializeServer(int.Parse(builder.Configuration["ControlServerPort"]));
 
             app.Run();
