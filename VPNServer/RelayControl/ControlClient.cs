@@ -1,5 +1,4 @@
 ﻿using NetCoreServer;
-using System.Text;
 using VPNServer.RelayControl.Packet;
 
 namespace VPNServer.RelayControl

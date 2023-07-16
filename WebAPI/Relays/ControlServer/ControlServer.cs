@@ -1,7 +1,6 @@
 ﻿using NetCoreServer;
-using System.Net.Sockets;
 using System.Net;
-using WebAPI.Relays;
+using System.Net.Sockets;
 using WebAPI.Relays.Type;
 
 namespace WebAPI.Relays.ControlServer

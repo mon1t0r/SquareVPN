@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace VPNServer.Utils
+﻿namespace VPNServer.Utils
 {
     public static class ProgramUtils
     {

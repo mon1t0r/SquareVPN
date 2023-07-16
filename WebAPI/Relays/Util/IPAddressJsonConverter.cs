@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System.Globalization;
 using System.Net;
-using System.Text.Json;
 
 namespace WebAPI.Relays.Util
 {
@@ -9,10 +7,10 @@ namespace WebAPI.Relays.Util
     {
         public override IPAddress? ReadJson(JsonReader reader, System.Type objectType, IPAddress? existingValue, bool hasExistingValue, Newtonsoft.Json.JsonSerializer serializer)
         {
-            string? value = (string?) reader.Value;
+            string? value = (string?)reader.Value;
             return value != null ? IPAddress.Parse(value) : IPAddress.None;
         }
-                
+
         public override void WriteJson(JsonWriter writer, IPAddress? value, Newtonsoft.Json.JsonSerializer serializer)
         {
             writer.WriteValue(value != null ? value.ToString() : string.Empty);

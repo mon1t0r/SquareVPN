@@ -1,6 +1,5 @@
 ﻿using NetCoreServer;
 using System.Net.Sockets;
-using System.Text;
 using WebAPI.Relays.ControlServer.Packet;
 
 namespace WebAPI.Relays.ControlServer

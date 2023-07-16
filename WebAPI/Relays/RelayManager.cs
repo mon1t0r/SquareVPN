@@ -21,11 +21,11 @@ namespace WebAPI.Relays
                 }
             };
             Countries = JsonConvert.DeserializeObject<List<Country>>(CountriesJson, settings);
-            if(Countries == null)
+            if (Countries == null)
                 throw new Exception("Relay list was null.");
 
             Relays = new();
-            foreach(var country in Countries)
+            foreach (var country in Countries)
                 foreach (var city in country.Cities)
                     Relays.AddRange(city.Relays);
         }

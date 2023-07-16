@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebAPI.Models;
 using WebAPI.Relays;
-using WebAPI.Relays.Type;
 
 namespace WebAPI.Controllers
 {
@@ -9,7 +7,7 @@ namespace WebAPI.Controllers
     [Route("info")]
     public class InformationController : ControllerBase
     {
-        [HttpGet("/relays")]
+        [HttpGet("relays")]
         public async Task<ActionResult<string>> GetRelays()
         {
             return RelayManager.CountriesJson;

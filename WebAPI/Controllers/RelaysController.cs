@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 using WebAPI.Models;
 using WebAPI.Relays;
@@ -22,7 +21,7 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-        [HttpPost("/connectPeer")]
+        [HttpPost("connectPeer")]
         public async Task<ActionResult<User>> ConnectPeer(string hostname)
         {
             if (_context.Devices == null)

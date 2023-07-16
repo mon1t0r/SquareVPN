@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using VPNServer.Classes;
+﻿using VPNServer.Classes;
 using VPNServer.RelayControl;
 using VPNServer.RelayControl.Packet;
 using VPNServer.Utils;
@@ -27,7 +25,7 @@ namespace VPNServer
             {
                 Console.WriteLine("Update");
                 IEnumerable<string> result = await CommandUtils.ExecuteCommandWithOutput("wg");
-                IEnumerable <Peer> peers = ParsingUtils.ParsePeersFromWG(result);
+                IEnumerable<Peer> peers = ParsingUtils.ParsePeersFromWG(result);
                 foreach (Peer peer in peers)
                     if ((DateTime.Now - peer.LatestHandshakeTimestamp).TotalSeconds > 10)
                         await CommandUtils.RemovePeer(peer);

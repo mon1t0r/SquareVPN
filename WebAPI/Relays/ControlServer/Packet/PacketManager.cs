@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using WebAPI.Models;
+﻿using System.Diagnostics;
 using WebAPI.Relays.ControlServer.Packet.Type;
 using WebAPI.Relays.Type;
 
@@ -63,7 +61,7 @@ namespace WebAPI.Relays.ControlServer.Packet
 
         private static void WriteRelayPacketToStream(IRelayPacket packet, ref MemoryStream stream)
         {
-            if(RelayPacketDict.TryGetValue(packet.GetType(), out short index))
+            if (RelayPacketDict.TryGetValue(packet.GetType(), out short index))
             {
                 BinaryWriter writer = new BinaryWriter(stream);
                 writer.Write(index);

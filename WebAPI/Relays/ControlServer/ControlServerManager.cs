@@ -17,7 +17,7 @@ namespace WebAPI.Relays.ControlServer
         public static void SendMessageToRelay(byte[] msg, Relay relay)
         {
             TcpSession? session = ControlServer.FindSessionForRelay(relay);
-            if(session != null)
+            if (session != null)
                 session.SendAsync(msg);
         }
 

@@ -24,7 +24,7 @@ namespace VPNServer.RelayControl.Packet.Type
 
         public static async void Handler(object obj)
         {
-            RPacketAddPeer packet = (RPacketAddPeer) obj;
+            RPacketAddPeer packet = (RPacketAddPeer)obj;
             await CommandUtils.AddPeer(new Peer
             {
                 PublicKey = packet.PublicKey,

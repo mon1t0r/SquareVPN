@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using VPNServer.RelayControl.Packet.Type;
 
 namespace VPNServer.RelayControl.Packet

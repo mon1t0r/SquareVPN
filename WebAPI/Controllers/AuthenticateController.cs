@@ -1,16 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.IdentityModel.Tokens;
-using NuGet.Common;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Security.Principal;
 using System.Text;
 using WebAPI.Models;
 using WebAPI.Utils;
@@ -112,7 +106,7 @@ namespace WebAPI.Controllers
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken(string accessToken, string refreshToken)
         {
-            if(string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(refreshToken))
+            if (string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(refreshToken))
                 return BadRequest("Invalid client request");
 
             var principal = GetPrincipalFromExpiredToken(accessToken);

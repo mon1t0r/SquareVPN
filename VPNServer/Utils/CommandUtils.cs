@@ -21,7 +21,7 @@ namespace VPNServer.Utils
             process.Start();
 
             await process.StandardInput.WriteLineAsync($"{(ProgramUtils.IsDebug ? $"echo {ProgramUtils.DebugSudoPassword} | sudo -S " : string.Empty)}{command}");
-            
+
             return process;
         }
 
@@ -36,7 +36,7 @@ namespace VPNServer.Utils
             while (process.StandardOutput.Peek() > -1)
             {
                 line = await process.StandardOutput.ReadLineAsync();
-                if(line != null)
+                if (line != null)
                     resultList.Add(line);
             }
 
