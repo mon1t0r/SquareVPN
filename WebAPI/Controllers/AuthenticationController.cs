@@ -13,12 +13,12 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("auth")]
-    public class AuthenticateController : Controller
+    public class AuthenticationController : Controller
     {
         private readonly IConfiguration _config;
         private readonly WebContext _context;
 
-        public AuthenticateController(IConfiguration config, WebContext context)
+        public AuthenticationController(IConfiguration config, WebContext context)
         {
             _config = config;
             _context = context;
