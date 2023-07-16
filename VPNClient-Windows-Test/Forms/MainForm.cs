@@ -66,5 +66,12 @@ namespace VPNClient_Windows_Test.Forms
         {
             RelaysTextBox.Text = (await SessionManager.GetRelays()).Replace("\n", "\r\n");
         }
+
+        private async void PaidUntilButton_Click(object sender, EventArgs e)
+        {
+            var time = await SessionManager.GetPaidUntil();
+            if (time != null)
+                PaidUntilTextBox.Text = time.Value.ToString();
+        }
     }
 }

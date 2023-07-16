@@ -45,6 +45,8 @@
             RelaysTextBox = new TextBox();
             RefreshRelaysButton = new Button();
             HostnameTextBox = new TextBox();
+            PaidUntilTextBox = new TextBox();
+            PaidUntilButton = new Button();
             SessionGroupBox.SuspendLayout();
             SuspendLayout();
             // 
@@ -208,11 +210,31 @@
             HostnameTextBox.Size = new Size(94, 27);
             HostnameTextBox.TabIndex = 6;
             // 
+            // PaidUntilTextBox
+            // 
+            PaidUntilTextBox.Location = new Point(12, 405);
+            PaidUntilTextBox.Name = "PaidUntilTextBox";
+            PaidUntilTextBox.ReadOnly = true;
+            PaidUntilTextBox.Size = new Size(206, 27);
+            PaidUntilTextBox.TabIndex = 7;
+            // 
+            // PaidUntilButton
+            // 
+            PaidUntilButton.Location = new Point(224, 405);
+            PaidUntilButton.Name = "PaidUntilButton";
+            PaidUntilButton.Size = new Size(106, 29);
+            PaidUntilButton.TabIndex = 8;
+            PaidUntilButton.Text = "Refresh";
+            PaidUntilButton.UseVisualStyleBackColor = true;
+            PaidUntilButton.Click += PaidUntilButton_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 739);
+            Controls.Add(PaidUntilButton);
+            Controls.Add(PaidUntilTextBox);
             Controls.Add(HostnameTextBox);
             Controls.Add(RefreshRelaysButton);
             Controls.Add(RelaysTextBox);
@@ -250,5 +272,7 @@
         private TextBox RelaysTextBox;
         private Button RefreshRelaysButton;
         private TextBox HostnameTextBox;
+        private TextBox PaidUntilTextBox;
+        private Button PaidUntilButton;
     }
 }

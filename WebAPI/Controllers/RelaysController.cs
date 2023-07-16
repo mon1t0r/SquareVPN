@@ -24,13 +24,21 @@ namespace WebAPI.Controllers
         [HttpPost("connect-peer")]
         public async Task<ActionResult<User>> ConnectPeer([FromForm] string hostname)
         {
-            if (_context.Devices == null)
+            if (_context.Devices == null || _context.Users == null)
                 return NotFound();
 
             var device = await _context.Devices.FindAsync(Guid.Parse(User.Identity.Name));
 
             if (device == null)
                 return NotFound();
+
+            var user = await _context.Users.FindAsync(device.UserUUID);
+
+            if (user == null)
+                return NotFound();
+
+            if (user.PaidUntilTimeStamp < DateTime.Now)
+                return BadRequest("Not paid");
 
             if (string.IsNullOrWhiteSpace(hostname))
                 return BadRequest("Invalid hostname");

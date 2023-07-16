@@ -31,7 +31,7 @@ namespace VPNClient_Windows_Test.Forms
 
         private void AuthForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            MainForm.Instance.Show();
+            Application.Exit();
         }
     }
 }

@@ -138,6 +138,23 @@ namespace VPNClient_Windows_Test.Utils.SessionUtils
             return await response.Content.ReadAsStringAsync();
         }
 
+        public static async Task<DateTime?> GetPaidUntil()
+        {
+            if (CurrentSession == null)
+                return null;
+
+            var request = new HttpRequestMessage(HttpMethod.Get, APIEndpoint + "info/paid-until");
+
+            request.Headers.Add("Authorization", $"Bearer {CurrentSession.AccessToken}");
+
+            var response = await HttpClient.SendAsync(request);
+
+            if (response == null || response.Content == null || !response.IsSuccessStatusCode)
+                return null; ;
+
+            return DateTime.FromBinary(long.Parse(await response.Content.ReadAsStringAsync()));
+        }
+
         public static void SaveSession() =>
             File.WriteAllText(SavePath, JsonConvert.SerializeObject(CurrentSession));
 
