@@ -13,5 +13,9 @@ namespace WebAPI.Models
         public ulong Id { get; set; }
         [Required, Column("paid_until")]
         public ulong PaidUntilTimeStamp { get; set; }
+        [Column("refresh_token")]
+        public string? RefreshToken { get; set; }
+        [Required, Column("refresh_token_expiry")]
+        public DateTime RefreshTokenExpiry { get; set; }
     }
 }

@@ -60,6 +60,8 @@ CREATE TABLE `user` (
   `user_uuid` char(36) NOT NULL DEFAULT '0',
   `user_id` bigint unsigned NOT NULL DEFAULT '0',
   `paid_until` bigint unsigned NOT NULL DEFAULT '0',
+  `refresh_token` varchar(90) DEFAULT NULL,
+  `refresh_token_expiry` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_uuid`),
   UNIQUE KEY `public_id_UNIQUE` (`user_id`),
   UNIQUE KEY `user_uuid_UNIQUE` (`user_uuid`)
