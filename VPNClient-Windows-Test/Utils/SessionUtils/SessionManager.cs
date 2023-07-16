@@ -1,10 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 using VPNClient_Windows_Test.Utils.SessionUtils.Response;
 
 namespace VPNClient_Windows_Test.Utils.SessionUtils
@@ -105,7 +100,7 @@ namespace VPNClient_Windows_Test.Utils.SessionUtils
                 return;
 
             var request = new HttpRequestMessage(HttpMethod.Post, APIEndpoint + "relays/connect-peer");
-            
+
             request.Headers.Add("Authorization", $"Bearer {CurrentSession.AccessToken}");
 
             var requestData = new Dictionary<string, string>
