@@ -1,5 +1,10 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Json;
+using System.Text;
+using System.Threading.Tasks;
 using VPNClient_Windows_Test.Utils.SessionUtils.Response;
 
 namespace VPNClient_Windows_Test.Utils.SessionUtils
@@ -55,8 +60,6 @@ namespace VPNClient_Windows_Test.Utils.SessionUtils
             request.Headers.Add("Authorization", $"Bearer {CurrentSession.AccessToken}");
             var response = await HttpClient.SendAsync(request);
 
-            CurrentSession = null;
-
             if (response == null || response.Content == null)
                 return;
 
@@ -66,6 +69,9 @@ namespace VPNClient_Windows_Test.Utils.SessionUtils
                 MessageBox.Show("Access token was updated, please call this method again", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+
+            CurrentSession = null;
+
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 return;
         }
@@ -100,7 +106,7 @@ namespace VPNClient_Windows_Test.Utils.SessionUtils
                 return;
 
             var request = new HttpRequestMessage(HttpMethod.Post, APIEndpoint + "relays/connect-peer");
-
+            
             request.Headers.Add("Authorization", $"Bearer {CurrentSession.AccessToken}");
 
             var requestData = new Dictionary<string, string>
