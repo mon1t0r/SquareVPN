@@ -42,18 +42,18 @@ namespace WebAPI.Controllers
             return user;
         }*/
 
-        [HttpPost("/connectUser")]
-        public async Task<ActionResult<User>> ConnectUser()
+        [HttpPost("/connectPeer")]
+        public async Task<ActionResult<User>> ConnectPeer(string deviceUUID)
         {
-            if (_context.Users == null)
+            if (_context.Devices == null)
                 return NotFound();
 
-            var user = await _context.Users.FindAsync(Guid.Parse(User.Identity.Name));
+            var device = await _context.Devices.FindAsync(Guid.Parse(User.Identity.Name), Guid.Parse(deviceUUID));
 
-            if (user == null)
+            if (device == null)
                 return NotFound();
 
-            PacketManager.SendPacketToRelay(new RPacketAddPeer(Convert.FromBase64String("iheCCfc8tsQVof3eOru6d/MiOeFlG11p5vYF9PlLXCY="), IPAddress.Parse("10.0.0.3")), RelayManager.Relays[0]);
+            PacketManager.SendPacketToRelay(new RPacketAddPeer(Convert.FromBase64String(device.PublicKey), IPAddress.Parse(device.IPV4Address)), RelayManager.Relays[0]);
 
             return Ok();
         }
