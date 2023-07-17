@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using VPNClient_Windows_Test.Utils;
 using VPNClient_Windows_Test.Utils.SessionUtils;
 
 namespace VPNClient_Windows_Test.Forms
@@ -20,9 +12,12 @@ namespace VPNClient_Windows_Test.Forms
 
         private async void LoginButton_Click(object sender, EventArgs e)
         {
-            await SessionManager.CreateSession(ulong.Parse(UserIdTextBox.Text));
-            if (SessionManager.CurrentSession != null)
+            var session = new Session();
+            bool result = await session.Login(ulong.Parse(UserIdTextBox.Text), WireguardKeyUtils.GenKeyPair(), (message) => RemoveDevicesListTextBox.Text = message, RemoveDeviceTextBox.Text.Replace("\n", "\r\n"));
+
+            if (result)
             {
+                SessionManager.CurrentSession = session;
                 MainForm.Instance.Show();
                 MainForm.Instance.UpdateSessionDisplay();
                 Close();
@@ -31,7 +26,7 @@ namespace VPNClient_Windows_Test.Forms
 
         private void AuthForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if(!MainForm.Instance.Visible)
+            if (!MainForm.Instance.Visible)
                 MainForm.Instance.Show();
         }
     }

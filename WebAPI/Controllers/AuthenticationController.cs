@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("create-device")]
-        public async Task<IActionResult> CreateDevice([FromForm] ulong userId, [FromForm] string publicKey)
+        public async Task<IActionResult> CreateDevice([FromForm] ulong userId, [FromForm] string publicKey, [FromForm] Guid? deviceRemoveUUID = null)
         {
             if (string.IsNullOrWhiteSpace(publicKey))
                 return BadRequest("Invalid client request");
@@ -38,10 +38,40 @@ namespace WebAPI.Controllers
             if (user == null)
                 return NotFound();
 
-            int deviceCount = await _context.Devices.Where((device) => device.UserUUID == user.UUID).CountAsync();
+            var userDevices = _context.Devices.Where((device) => device.UserUUID == user.UUID);
 
-            if (deviceCount >= int.Parse(_config["MaxDevicesPerUser"]))
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Device limit reached" });
+            if (await userDevices.CountAsync() >= int.Parse(_config["MaxDevicesPerUser"]))
+            {
+                if(deviceRemoveUUID != null)
+                {
+                    var removeDevice = await userDevices.FirstOrDefaultAsync((device) => device.UUID == deviceRemoveUUID.Value);
+                    if (removeDevice == null)
+                        return NotFound();
+
+                    _context.Devices.Remove(removeDevice);
+                }
+                else
+                {
+                    var devices = new List<object>();
+                    foreach (var userDevice in userDevices)
+                    {
+                        devices.Add(new
+                        {
+                            UUID = userDevice.UUID,
+                            Name = userDevice.Name,
+                            Created = userDevice.CreatedTimeStamp.ToBinary()
+                        });
+                    }
+
+                    var responseDevices = new
+                    {
+                        Status = "RemoveDevice",
+                        Data = devices
+                    };
+
+                    return Json(responseDevices);
+                }
+            }
 
             var deviceUUID = Guid.NewGuid();
 
@@ -52,8 +82,6 @@ namespace WebAPI.Controllers
 
             var accessToken = CreateAccessToken(authClaims);
             var refreshToken = CreateRefreshToken(64);
-
-            int refreshTokenLifeTime = int.Parse(_config["JWT:RefreshLifeTimeInDays"]);
 
             Device device = new Device
             {
@@ -73,34 +101,20 @@ namespace WebAPI.Controllers
 
             var response = new
             {
-                AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
-                RefreshToken = refreshToken,
-                Device = new
+                Status = "Success",
+                Data = new
                 {
-                    Name = device.Name,
-                    IPV4Address = device.IPV4Address
+                    AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
+                    RefreshToken = refreshToken,
+                    Device = new
+                    {
+                        Name = device.Name,
+                        IPV4Address = device.IPV4Address
+                    }
                 }
             };
 
             return Json(response);
-        }
-
-        [HttpPost("remove-device")]
-        [Authorize]
-        public async Task<IActionResult> RemoveDevice()
-        {
-            if (_context.Devices == null)
-                return NotFound();
-
-            var device = await _context.Devices.FindAsync(Guid.Parse(User.Identity.Name));
-
-            if (device == null)
-                return NotFound();
-
-            _context.Devices.Remove(device);
-            await _context.SaveChangesAsync();
-
-            return Ok();
         }
 
         [HttpPost("refresh-token")]
@@ -179,7 +193,6 @@ namespace WebAPI.Controllers
                 throw new SecurityTokenException("Invalid token");
 
             return principal;
-
         }
     }
 }

@@ -31,6 +31,8 @@
             UserIdTextBox = new TextBox();
             AuthLabel = new Label();
             LoginButton = new Button();
+            RemoveDevicesListTextBox = new TextBox();
+            RemoveDeviceTextBox = new TextBox();
             SuspendLayout();
             // 
             // UserIdTextBox
@@ -61,11 +63,29 @@
             LoginButton.UseVisualStyleBackColor = true;
             LoginButton.Click += LoginButton_Click;
             // 
+            // RemoveDevicesListTextBox
+            // 
+            RemoveDevicesListTextBox.Location = new Point(12, 155);
+            RemoveDevicesListTextBox.Multiline = true;
+            RemoveDevicesListTextBox.Name = "RemoveDevicesListTextBox";
+            RemoveDevicesListTextBox.ReadOnly = true;
+            RemoveDevicesListTextBox.Size = new Size(367, 272);
+            RemoveDevicesListTextBox.TabIndex = 3;
+            // 
+            // RemoveDeviceTextBox
+            // 
+            RemoveDeviceTextBox.Location = new Point(12, 433);
+            RemoveDeviceTextBox.Name = "RemoveDeviceTextBox";
+            RemoveDeviceTextBox.Size = new Size(367, 27);
+            RemoveDeviceTextBox.TabIndex = 4;
+            // 
             // AuthForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(391, 160);
+            ClientSize = new Size(391, 473);
+            Controls.Add(RemoveDeviceTextBox);
+            Controls.Add(RemoveDevicesListTextBox);
             Controls.Add(LoginButton);
             Controls.Add(AuthLabel);
             Controls.Add(UserIdTextBox);
@@ -83,5 +103,7 @@
         private TextBox UserIdTextBox;
         private Label AuthLabel;
         private Button LoginButton;
+        private TextBox RemoveDevicesListTextBox;
+        private TextBox RemoveDeviceTextBox;
     }
 }

@@ -23,20 +23,18 @@ namespace VPNClient_Windows_Test.Forms
             UpdateSessionDisplay();
         }
 
-        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e) =>
             SessionManager.SaveSession();
-        }
 
         private async void LogoutButton_Click(object sender, EventArgs e)
         {
-            await SessionManager.RemoveSession();
-            if (SessionManager.CurrentSession == null)
-            {
-                var form = new AuthForm();
-                form.Show();
-                Hide();
-            }
+            if(SessionManager.CurrentSession != null)
+                await SessionManager.CurrentSession.Logout();
+            SessionManager.CurrentSession = null;
+
+            var form = new AuthForm();
+            form.Show();
+            Hide();
         }
 
         public void UpdateSessionDisplay()
@@ -53,25 +51,27 @@ namespace VPNClient_Windows_Test.Forms
 
         private async void RefreshTokenButton_Click(object sender, EventArgs e)
         {
-            await SessionManager.RefreshAccessToken();
+            if (SessionManager.CurrentSession != null)
+                await SessionManager.CurrentSession.RefreshAccessToken();
             UpdateSessionDisplay();
         }
 
         private async void ConnectPeerButton_Click(object sender, EventArgs e)
         {
-            await SessionManager.ConnectPeer(HostnameTextBox.Text);
+            if (SessionManager.CurrentSession != null)
+                await SessionManager.CurrentSession.ConnectPeer(HostnameTextBox.Text);
         }
 
         private async void RefreshRelaysButton_Click(object sender, EventArgs e)
         {
-            RelaysTextBox.Text = (await SessionManager.GetRelays()).Replace("\n", "\r\n");
+            if (SessionManager.CurrentSession != null)
+                RelaysTextBox.Text = (await SessionManager.CurrentSession.GetRelays())?.Replace("\n", "\r\n");
         }
 
         private async void PaidUntilButton_Click(object sender, EventArgs e)
         {
-            var time = await SessionManager.GetPaidUntil();
-            if (time != null)
-                PaidUntilTextBox.Text = time.Value.ToString();
+            if (SessionManager.CurrentSession != null)
+                PaidUntilTextBox.Text = (await SessionManager.CurrentSession.GetPaidUntil())?.ToLocalTime().ToString();
         }
     }
 }

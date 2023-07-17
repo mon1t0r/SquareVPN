@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
             if (user == null)
                 return NotFound();
 
-            if (user.PaidUntilTimeStamp < DateTime.Now)
+            if (user.PaidUntilTimeStamp < DateTime.UtcNow)
                 return BadRequest("Not paid");
 
             if (string.IsNullOrWhiteSpace(hostname))

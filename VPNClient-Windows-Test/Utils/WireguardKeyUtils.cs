@@ -1,14 +1,8 @@
 ﻿using Geralt;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VPNClient_Windows_Test.Utils
 {
-    internal class WireguardKeyUtils
+    public class WireguardKeyUtils
     {
         public static (string, string) GenKeyPair()
         {
