@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using API.Responses;
+using API.Responses.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -52,21 +55,21 @@ namespace WebAPI.Controllers
                 }
                 else
                 {
-                    var devices = new List<object>();
+                    var devices = new List<APIDevice>();
                     foreach (var userDevice in userDevices)
                     {
-                        devices.Add(new
+                        devices.Add(new APIDevice
                         {
                             UUID = userDevice.UUID,
                             Name = userDevice.Name,
-                            Created = userDevice.CreatedTimeStamp.ToBinary()
+                            CreatedUTC = userDevice.CreatedTimeStamp
                         });
                     }
 
-                    var responseDevices = new
+                    var responseDevices = new APICreateDeviceResponse
                     {
                         Status = "RemoveDevice",
-                        Data = devices
+                        Data = JsonConvert.SerializeObject(devices, Formatting.Indented)
                     };
 
                     return Json(responseDevices);
@@ -99,19 +102,23 @@ namespace WebAPI.Controllers
             await _context.SaveChangesAsync();
             await deviceEntry.ReloadAsync();
 
-            var response = new
+            var response = new APICreateDeviceResponse
             {
                 Status = "Success",
-                Data = new
+                Data = JsonConvert.SerializeObject(new APICreateDeviceResponseData
                 {
-                    AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
-                    RefreshToken = refreshToken,
-                    Device = new
+                    TokenPair = new APITokenPair
                     {
+                        AccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
+                        RefreshToken = refreshToken
+                    },
+                    Device = new APIDevice
+                    {
+                        UUID = deviceUUID,
                         Name = device.Name,
                         IPV4Address = device.IPV4Address
                     }
-                }
+                })
             };
 
             return Json(response);
@@ -141,7 +148,7 @@ namespace WebAPI.Controllers
             device.RefreshToken = newRefreshToken;
             await _context.SaveChangesAsync();
 
-            var response = new
+            var response = new APITokenPair
             {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
                 RefreshToken = newRefreshToken

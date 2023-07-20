@@ -1,12 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using API;
+using Newtonsoft.Json;
 
-namespace VPNClient_Windows_Test.Utils.SessionUtils
+namespace VPNClient_Windows_Test.Utils
 {
     internal class SessionManager
     {
         private const string SavePath = "session.json";
 
-        public static Session? CurrentSession { get; set; }
+        public static APISession? CurrentSession { get; set; }
 
         public static void SaveSession() =>
             File.WriteAllText(SavePath, JsonConvert.SerializeObject(CurrentSession));
@@ -14,7 +15,7 @@ namespace VPNClient_Windows_Test.Utils.SessionUtils
         public static void LoadSession()
         {
             if (File.Exists(SavePath))
-                CurrentSession = JsonConvert.DeserializeObject<Session>(File.ReadAllText(SavePath));
+                CurrentSession = JsonConvert.DeserializeObject<APISession>(File.ReadAllText(SavePath));
         }
     }
 }

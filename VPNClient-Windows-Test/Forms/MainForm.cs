@@ -1,4 +1,4 @@
-using VPNClient_Windows_Test.Utils.SessionUtils;
+using VPNClient_Windows_Test.Utils;
 
 namespace VPNClient_Windows_Test.Forms
 {
@@ -39,13 +39,20 @@ namespace VPNClient_Windows_Test.Forms
 
         public void UpdateSessionDisplay()
         {
-            if (SessionManager.CurrentSession != null)
+            var session = SessionManager.CurrentSession;
+            if (session != null)
             {
-                AccessTokenTextBox.Text = SessionManager.CurrentSession.AccessToken;
-                RefreshTokenTextBox.Text = SessionManager.CurrentSession.RefreshToken;
-                DeviceNameTextBox.Text = SessionManager.CurrentSession.DeviceName;
-                IPV4AddressTextBox.Text = SessionManager.CurrentSession.IPV4Address;
-                PrivateKeyTextBox.Text = SessionManager.CurrentSession.PrivateKey;
+                if(session.TokenPair != null)
+                {
+                    AccessTokenTextBox.Text = session.TokenPair.AccessToken;
+                    RefreshTokenTextBox.Text = session.TokenPair.RefreshToken;
+                } 
+                if(session.Device != null)
+                {
+                    DeviceNameTextBox.Text = session.Device.Name;
+                    IPV4AddressTextBox.Text = session.Device.IPV4Address;
+                }
+                PrivateKeyTextBox.Text = session.PrivateKey;
             }
         }
 

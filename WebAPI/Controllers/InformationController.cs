@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
         [Authorize]
         public ActionResult<string> GetRelays()
         {
-            return RelayManager.ClientCountriesJson;
+            return RelayManager.APICountriesJson;
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using WebAPI.Relays.Type.Client;
+﻿using API.Responses.Models.Relays;
+using Newtonsoft.Json;
 using WebAPI.Relays.Type.Server;
 using WebAPI.Relays.Util;
 
@@ -10,7 +10,7 @@ namespace WebAPI.Relays
         public static List<Country> Countries { get; private set; }
         public static List<Relay> Relays { get; private set; }
 
-        public static string ClientCountriesJson { get; private set; }
+        public static string APICountriesJson { get; private set; }
 
         public static void Initialize()
         {
@@ -30,39 +30,39 @@ namespace WebAPI.Relays
                 foreach (var city in country.Cities)
                     Relays.AddRange(city.Relays);
 
-            var clientCountries = new List<ClientCountry>();
+            var apiCountries = new List<APICountry>();
             foreach (var country in Countries)
             {
-                var clientCities = new List<ClientCity>();
+                var apiCities = new List<APICity>();
                 foreach (var city in country.Cities)
                 {
-                    var clientRelays = new List<ClientRelay>();
+                    var apiRelays = new List<APIRelay>();
                     foreach (var relay in city.Relays)
                     {
-                        clientRelays.Add(new()
+                        apiRelays.Add(new()
                         {
                             Hostname = relay.Hostname,
                             IPV4 = relay.IPV4
                         });
                     }
 
-                    clientCities.Add(new()
+                    apiCities.Add(new()
                     {
                         Name = city.Name,
                         CityCode = city.CityCode,
-                        Relays = clientRelays
+                        Relays = apiRelays
                     });
                 }
 
-                clientCountries.Add(new()
+                apiCountries.Add(new()
                 {
                     Name = country.Name,
                     CountryCode = country.CountryCode,
-                    Cities = clientCities
+                    Cities = apiCities
                 });
             }
 
-            ClientCountriesJson = JsonConvert.SerializeObject(clientCountries, Formatting.Indented, settings);
+            APICountriesJson = JsonConvert.SerializeObject(apiCountries, Formatting.Indented, settings);
         }
     }
 }

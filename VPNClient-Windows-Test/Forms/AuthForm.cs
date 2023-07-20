@@ -1,5 +1,5 @@
-﻿using VPNClient_Windows_Test.Utils;
-using VPNClient_Windows_Test.Utils.SessionUtils;
+﻿using API;
+using VPNClient_Windows_Test.Utils;
 
 namespace VPNClient_Windows_Test.Forms
 {
@@ -12,8 +12,8 @@ namespace VPNClient_Windows_Test.Forms
 
         private async void LoginButton_Click(object sender, EventArgs e)
         {
-            var session = new Session();
-            bool result = await session.Login(ulong.Parse(UserIdTextBox.Text), WireguardKeyUtils.GenKeyPair(), (message) => RemoveDevicesListTextBox.Text = message, RemoveDeviceTextBox.Text.Replace("\n", "\r\n"));
+            var session = new APISession();
+            bool result = await session.Login(ulong.Parse(UserIdTextBox.Text), WireguardKeyUtils.GenKeyPair(), (message) => RemoveDevicesListTextBox.Text = message.Replace("\\n", "\r\n").Replace("\\", ""), RemoveDeviceTextBox.Text);
 
             if (result)
             {

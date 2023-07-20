@@ -1,9 +1,14 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace WebAPI.Relays.Type
+namespace API.Responses.Models.Relays
 {
-    public abstract class RelayBase
+    public class APIRelayBase
     {
         [JsonProperty("hostname")]
         public string Hostname { get; set; }

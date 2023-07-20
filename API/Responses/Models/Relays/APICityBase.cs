@@ -1,8 +1,13 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace WebAPI.Relays.Type
+namespace API.Responses.Models.Relays
 {
-    public abstract class CityBase
+    public class APICityBase
     {
         [JsonProperty("name")]
         public string Name { get; set; }

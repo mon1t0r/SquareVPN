@@ -1,6 +1,6 @@
-﻿namespace VPNClient_Windows_Test.Utils
+﻿namespace API.Utils
 {
-    public class APIEndpoints
+    internal class APIEndpoints
     {
         public const string APIEndpoint = "https://localhost:44317/";
 

@@ -1,18 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using API.Responses;
+using API.Responses.Models;
+using API.Utils;
+using Newtonsoft.Json;
 using System.Net;
-using System.Net.Http.Json;
-using System.Text.Json;
 
-namespace VPNClient_Windows_Test.Utils.SessionUtils
+namespace API
 {
-    public class Session
+    public class APISession
     {
         private static readonly HttpClient HttpClient = new HttpClient();
 
-        public string? AccessToken { get; set; }
-        public string? RefreshToken { get; set; }
-        public string? DeviceName { get; set; }
-        public string? IPV4Address { get; set; }
+        public APITokenPair? TokenPair { get; set; }
+        public APIDevice? Device { get; set; }
         public string? PrivateKey { get; set; }
 
         public async Task<bool> Login(ulong userId, (string, string) keyPair, Action<string> maxDevicesCallback, string? deviceRemoveUUID = null)
@@ -31,23 +30,25 @@ namespace VPNClient_Windows_Test.Utils.SessionUtils
             if (response == null || response.Content == null || !response.IsSuccessStatusCode)
                 return false;
 
-            var authResponse = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
-            if(authResponse == null)
+            var authResponse = JsonConvert.DeserializeObject<APICreateDeviceResponse>(await response.Content.ReadAsStringAsync());
+            if (authResponse == null)
                 return false;
 
-            if (authResponse.status == "Success")
+            if (authResponse.Status == "Success")
             {
-                AccessToken = authResponse.data.accessToken;
-                RefreshToken = authResponse.data.refreshToken;
-                DeviceName = authResponse.data.device.name;
-                IPV4Address = authResponse.data.device.ipV4Address;
-                PrivateKey = keyPair.Item1;
+                var responseData = JsonConvert.DeserializeObject<APICreateDeviceResponseData>(authResponse.Data);
+                if (responseData != null)
+                {
+                    TokenPair = responseData.TokenPair;
+                    Device = responseData.Device;
+                    PrivateKey = keyPair.Item1;
 
-                return true;
+                    return true;
+                }
             }
-            if(authResponse.status == "RemoveDevice")
+            if (authResponse.Status == "RemoveDevice")
             {
-                maxDevicesCallback.Invoke(JsonConvert.SerializeObject(authResponse.data, Formatting.Indented));
+                maxDevicesCallback.Invoke(JsonConvert.SerializeObject(authResponse.Data, Formatting.Indented));
                 return false;
             }
 
@@ -96,18 +97,22 @@ namespace VPNClient_Windows_Test.Utils.SessionUtils
             if (response == null || response.Content == null || !response.IsSuccessStatusCode)
                 return null;
 
-            return DateTime.FromBinary(long.Parse(await response.Content.ReadAsStringAsync()));
+            var paidUntilResponse = JsonConvert.DeserializeObject<APIPaidUntilResponse>(await response.Content.ReadAsStringAsync());
+            if (paidUntilResponse == null)
+                return null;
+
+            return paidUntilResponse.PaidUntilUTC;
         }
 
         public async Task<bool> RefreshAccessToken()
         {
-            if (string.IsNullOrWhiteSpace(AccessToken) || string.IsNullOrWhiteSpace(RefreshToken))
+            if (TokenPair == null || string.IsNullOrWhiteSpace(TokenPair.AccessToken) || string.IsNullOrWhiteSpace(TokenPair.RefreshToken))
                 return false;
 
             var requestData = new Dictionary<string, string>
             {
-                { "accessToken", AccessToken },
-                { "refreshToken", RefreshToken }
+                { "accessToken", TokenPair.AccessToken },
+                { "refreshToken", TokenPair.RefreshToken }
             };
 
             var response = await SendRequestAsync(HttpMethod.Post, APIEndpoints.RefreshToken, requestData, false);
@@ -115,25 +120,26 @@ namespace VPNClient_Windows_Test.Utils.SessionUtils
             if (response == null || response.Content == null || !response.IsSuccessStatusCode)
                 return false;
 
-            var refreshResponse = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
+            var str = await response.Content.ReadAsStringAsync();
+
+            var refreshResponse = JsonConvert.DeserializeObject<APITokenPair>(str);
             if (refreshResponse == null)
                 return false;
 
-            AccessToken = refreshResponse.accessToken;
-            RefreshToken = refreshResponse.refreshToken;
+            TokenPair = refreshResponse;
 
             return true;
         }
 
         private async Task<HttpResponseMessage> SendRequestAsync(HttpMethod httpMethod, Uri endpoint, Dictionary<string, string>? requestData = null, bool authorize = true)
         {
-            authorize &= !string.IsNullOrWhiteSpace(AccessToken);
+            authorize &= TokenPair != null && !string.IsNullOrWhiteSpace(TokenPair.AccessToken);
 
             var request = new HttpRequestMessage(httpMethod, endpoint);
 
-            if(authorize)
-                request.Headers.Add("Authorization", $"Bearer {AccessToken}");
-            if(requestData != null)
+            if (authorize)
+                request.Headers.Add("Authorization", $"Bearer {TokenPair.AccessToken}");
+            if (requestData != null)
                 request.Content = new FormUrlEncodedContent(requestData);
 
             var response = await HttpClient.SendAsync(request);

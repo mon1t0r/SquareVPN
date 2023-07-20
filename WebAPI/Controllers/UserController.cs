@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using API.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
 
 namespace WebAPI.Controllers
@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
     [ApiController]
     [Route("user")]
     [Authorize]
-    public class UserController : ControllerBase
+    public class UserController : Controller
     {
         private readonly WebContext _context;
 
@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("paid-until")]
-        public async Task<ActionResult<long>> GetPaidTimeStamp()
+        public async Task<IActionResult> GetPaidTimeStamp()
         {
             if (_context.Devices == null || _context.Users == null)
                 return NotFound();
@@ -33,7 +33,12 @@ namespace WebAPI.Controllers
             if (user == null)
                 return NotFound();
 
-            return user.PaidUntilTimeStamp.ToBinary();
+            var response = new APIPaidUntilResponse
+            {
+                PaidUntilUTC = user.PaidUntilTimeStamp
+            };
+
+            return Json(response);
         }
 
         [HttpPost("remove-current-device")]

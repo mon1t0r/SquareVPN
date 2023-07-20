@@ -1,5 +1,5 @@
 using VPNClient_Windows_Test.Forms;
-using VPNClient_Windows_Test.Utils.SessionUtils;
+using VPNClient_Windows_Test.Utils;
 
 namespace VPNClient_Windows_Test
 {
