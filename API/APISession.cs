@@ -14,6 +14,9 @@ namespace API
         public APIDevice? Device { get; set; }
         public string? PrivateKey { get; set; }
 
+        public delegate void DataUpdatedEventHandler();
+        public event DataUpdatedEventHandler OnDataUpdated;
+
         public async Task<bool> Login(ulong userId, (string, string) keyPair, Action<string> maxDevicesCallback, string? deviceRemoveUUID = null)
         {
             var requestData = new Dictionary<string, string>
@@ -43,6 +46,8 @@ namespace API
                     Device = responseData.Device;
                     PrivateKey = keyPair.Item1;
 
+                    OnDataUpdated.Invoke();
+
                     return true;
                 }
             }
@@ -62,7 +67,18 @@ namespace API
             if (response == null || response.Content == null)
                 return false;
 
-            return response.IsSuccessStatusCode;
+            if(response.IsSuccessStatusCode)
+            {
+                TokenPair = null;
+                Device = null;
+                PrivateKey = null;
+
+                OnDataUpdated.Invoke();
+
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<bool> ConnectPeer(string hostname)
@@ -127,6 +143,8 @@ namespace API
                 return false;
 
             TokenPair = refreshResponse;
+
+            OnDataUpdated.Invoke();
 
             return true;
         }

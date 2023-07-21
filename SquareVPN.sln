@@ -14,7 +14,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VPNClient-Windows-Test", "V
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{0F3E9070-DA1F-490F-98D9-6248DD4BCC3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VPNClient", "VPNClient\VPNClient.csproj", "{D86DB1DA-B9A7-4ACE-8BDE-AC2E0E533263}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VPNClient", "VPNClient\VPNClient.csproj", "{D86DB1DA-B9A7-4ACE-8BDE-AC2E0E533263}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F3E9070-DA1F-490F-98D9-6248DD4BCC3E} = {0F3E9070-DA1F-490F-98D9-6248DD4BCC3E}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
