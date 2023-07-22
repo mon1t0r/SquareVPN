@@ -25,19 +25,23 @@ namespace VPNClient.Classes
             await UpdateCountriesAsync();
         }
 
-        private static async void CurrentSession_OnDataUpdated() =>
+        private static async Task CurrentSession_OnDataUpdated() =>
             await SaveSessionAsync();
 
-        private static async void CurrentSession_OnLogin()
+        private static async Task CurrentSession_OnLogin()
         {
             await UpdatePaidUntilAsync();
             await UpdateCountriesAsync();
         }
 
-        private static void CurrentSession_OnLogout()
+        private static Task CurrentSession_OnLogout()
         {
-            Application.Current.MainPage = new NavigationPage(new LoginPage());
+            if (Application.Current != null)
+                Application.Current.MainPage = new NavigationPage(new LoginPage());
             PaidUntil = null;
+            Countries = null;
+
+            return Task.CompletedTask;
         }
 
         private static async Task UpdatePaidUntilAsync()
@@ -77,16 +81,9 @@ namespace VPNClient.Classes
 
         private static void RegisterSessionEvents()
         {
-            CurrentSession.OnDataUpdated += CurrentSession_OnDataUpdated;
-            CurrentSession.OnLogin += CurrentSession_OnLogin;
-            CurrentSession.OnLogout += CurrentSession_OnLogout;
-        }
-
-        private static void UnregisterSessionEvents()
-        {
-            CurrentSession.OnDataUpdated -= CurrentSession_OnDataUpdated;
-            CurrentSession.OnLogin -= CurrentSession_OnLogin;
-            CurrentSession.OnLogout -= CurrentSession_OnLogout;
+            CurrentSession.OnDataUpdated = CurrentSession_OnDataUpdated;
+            CurrentSession.OnLogin = CurrentSession_OnLogin;
+            CurrentSession.OnLogout = CurrentSession_OnLogout;
         }
     }
 }

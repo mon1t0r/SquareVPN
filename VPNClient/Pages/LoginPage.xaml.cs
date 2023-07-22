@@ -15,11 +15,19 @@ public partial class LoginPage : ContentPage
         if (!ulong.TryParse(UserIdEntry.Text, out ulong userId))
             return;
 
-        bool result = await SessionManager.CurrentSession.Login(userId, WireguardKeyUtils.GenKeyPair(), (message) => { }, null);
+        bool result = await SessionManager.CurrentSession.Login(userId, WireguardKeyUtils.GenKeyPair(),
+            (devices) =>
+            {
+                Application.Current.MainPage = new NavigationPage(new LoginRemoveDevicePage(devices, async (device) =>
+                {
+                    result = await SessionManager.CurrentSession.Login(userId, WireguardKeyUtils.GenKeyPair(), (d) => { }, device.UUID.ToString());
+
+                    if (result)
+                        Application.Current.MainPage = new AppShell();
+                }));
+            }, null);
 
         if (result)
-        {
             Application.Current.MainPage = new AppShell();
-        }
     }
 }

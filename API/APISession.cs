@@ -7,12 +7,16 @@ using System.Net;
 
 namespace API
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class APISession
     {
         private static readonly HttpClient HttpClient = new HttpClient();
 
+        [JsonProperty]
         public APITokenPair? TokenPair { get; set; }
+        [JsonProperty]
         public APIDevice? Device { get; set; }
+        [JsonProperty]
         public string? PrivateKey { get; set; }
 
         public bool IsActive
@@ -20,17 +24,11 @@ namespace API
             get => TokenPair != null && Device != null && PrivateKey != null;
         }
 
-        [JsonIgnore]
         public APIEndpoints APIEndpoints;
 
-        public delegate void DataUpdatedEventHandler();
-        public event DataUpdatedEventHandler? OnDataUpdated;
-
-        public delegate void LoginEventHandler();
-        public event LoginEventHandler? OnLogin;
-
-        public delegate void LogoutEventHandler();
-        public event LogoutEventHandler? OnLogout;
+        public Func<Task>? OnDataUpdated;
+        public Func<Task>? OnLogin;
+        public Func<Task>? OnLogout;
 
         public APISession()
         {
@@ -42,7 +40,7 @@ namespace API
             APIEndpoints = new APIEndpoints(endpoint);
         }
 
-        public async Task<bool> Login(ulong userId, (string, string) keyPair, Action<string> maxDevicesCallback, string? deviceRemoveUUID = null)
+        public async Task<bool> Login(ulong userId, (string, string) keyPair, Action<List<APIDevice>> maxDevicesCallback, string? deviceRemoveUUID = null)
         {
             var requestData = new Dictionary<string, string>
             {
@@ -71,15 +69,19 @@ namespace API
                     Device = responseData.Device;
                     PrivateKey = keyPair.Item1;
 
-                    OnDataUpdated?.Invoke();
-                    OnLogin?.Invoke();
+                    if(OnDataUpdated != null)
+                        await OnDataUpdated.Invoke();
+                    if(OnLogin != null)
+                        await OnLogin.Invoke();
 
                     return true;
                 }
             }
             if (authResponse.Status == "RemoveDevice")
             {
-                maxDevicesCallback.Invoke(JsonConvert.SerializeObject(authResponse.Data, Formatting.Indented));
+                var responseData = JsonConvert.DeserializeObject<List<APIDevice>>(authResponse.Data);
+                if (responseData != null)
+                    maxDevicesCallback.Invoke(responseData);
                 return false;
             }
 
@@ -89,7 +91,7 @@ namespace API
         public async Task Logout()
         {
             await SendRequestAsync(HttpMethod.Post, APIEndpoints.RemoveCurrentDevice);
-            ClearSession();
+            await ClearSession();
         }
 
         public async Task<bool> ConnectPeer(string hostname)
@@ -157,7 +159,8 @@ namespace API
 
             TokenPair = refreshResponse;
 
-            OnDataUpdated?.Invoke();
+            if(OnDataUpdated != null)
+                await OnDataUpdated.Invoke();
 
             return true;
         }
@@ -179,7 +182,7 @@ namespace API
             {
                 if(!await RefreshAccessToken())
                 {
-                    ClearSession();
+                    await ClearSession();
                     return response;
                 }
                 return await SendRequestAsync(httpMethod, endpoint, requestData);
@@ -189,14 +192,16 @@ namespace API
             return response;
         }
 
-        private void ClearSession()
+        private async Task ClearSession()
         {
             TokenPair = null;
             Device = null;
             PrivateKey = null;
 
-            OnDataUpdated?.Invoke();
-            OnLogout?.Invoke();
+            if(OnDataUpdated != null)
+                await OnDataUpdated.Invoke();
+            if(OnLogout != null)
+                await OnLogout.Invoke();
         }
     }
 }

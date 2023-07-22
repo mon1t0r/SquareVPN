@@ -94,7 +94,7 @@ namespace WebAPI.Controllers
                 Name = DeviceNames.GetRandomName(),
 
                 IPV4Address = string.Empty,
-                CreatedTimeStamp = DateTime.Now,
+                CreatedTimeStamp = DateTime.UtcNow,
                 RefreshToken = refreshToken
             };
 

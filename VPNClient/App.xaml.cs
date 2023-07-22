@@ -9,7 +9,7 @@ namespace VPNClient
         {
             InitializeComponent();
 
-            MainPage = SessionManager.CurrentSession.IsActive || true ? new AppShell() : new NavigationPage(new LoginPage());
+            MainPage = SessionManager.CurrentSession.IsActive ? new AppShell() : new NavigationPage(new LoginPage());
         }
     }
 }
