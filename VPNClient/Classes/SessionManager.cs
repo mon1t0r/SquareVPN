@@ -9,7 +9,7 @@ namespace VPNClient.Classes
     public class SessionManager
     {
         private const string SessionKey = "session";
-        private const string SessionEndpoint = "https://localhost:44317/";
+        private const string SessionEndpoint = "http://192.168.2.110:61995/";
 
         public static APISession CurrentSession { get; private set; }
 
@@ -18,7 +18,6 @@ namespace VPNClient.Classes
 
         public static async Task Initialize()
         {
-            Thread.Sleep(2000);
             await LoadSessionAsync();
             RegisterSessionEvents();
             await UpdatePaidUntilAsync();
@@ -37,7 +36,7 @@ namespace VPNClient.Classes
         private static Task CurrentSession_OnLogout()
         {
             if (Application.Current != null)
-                Application.Current.MainPage = new NavigationPage(new LoginPage());
+                Application.Current.MainPage = new LoginPage();
             PaidUntil = null;
             Countries = null;
 

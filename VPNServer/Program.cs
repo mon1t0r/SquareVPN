@@ -7,6 +7,8 @@ namespace VPNServer
 {
     public class Program
     {
+        private const int PeerUpdateIntervalSeconds = 180000;
+
         public static void Main(string[] args)
         {
             Config.Initialize();
@@ -23,14 +25,13 @@ namespace VPNServer
         {
             do
             {
-                Console.WriteLine("Update");
                 IEnumerable<string> result = await CommandUtils.ExecuteCommandWithOutput("wg");
                 IEnumerable<Peer> peers = ParsingUtils.ParsePeersFromWG(result);
                 foreach (Peer peer in peers)
-                    if ((DateTime.Now - peer.LatestHandshakeTimestamp).TotalSeconds > 10)
+                    if ((DateTime.Now - peer.LatestHandshakeTimestamp).TotalSeconds > PeerUpdateIntervalSeconds)
                         await CommandUtils.RemovePeer(peer);
 
-                Thread.Sleep(180000);//180000
+                Thread.Sleep(PeerUpdateIntervalSeconds);
             } while (true);
         }
     }

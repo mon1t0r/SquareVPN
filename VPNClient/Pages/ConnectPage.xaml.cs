@@ -16,8 +16,14 @@ public partial class ConnectPage : ContentPage
         RelayPicker.SelectedIndex = 0;
     }
 
-    private async void ConnectButton_Clicked(object sender, EventArgs e)
+    private async void ConnectButton_Clicked(object sender, EventArgs e)//TODO: Rewrite
     {
+        if(ConnectButton.Text == "Disconnect")
+        {
+            WireguardManager.DisconnectFromRelay();
+            return;
+        }
+
         var relay = (APIRelay)RelayPicker.SelectedItem;
         if (relay != null)
         {
@@ -26,6 +32,7 @@ public partial class ConnectPage : ContentPage
                 MainThread.InvokeOnMainThreadAsync(async () =>
                 {
                     StatusLabel.Text = state;
+                    ConnectButton.Text = state == "UP" ? "Disconnect" : "Connect";
                 });
             });
             await WireguardManager.ConnectToRelay(relay);

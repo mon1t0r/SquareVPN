@@ -18,13 +18,13 @@ public partial class LoginPage : ContentPage
         bool result = await SessionManager.CurrentSession.Login(userId, WireguardKeyUtils.GenKeyPair(),
             (devices) =>
             {
-                Application.Current.MainPage = new NavigationPage(new LoginRemoveDevicePage(devices, async (device) =>
+                Application.Current.MainPage = new LoginRemoveDevicePage(devices, async (device) =>
                 {
                     result = await SessionManager.CurrentSession.Login(userId, WireguardKeyUtils.GenKeyPair(), (d) => { }, device.UUID.ToString());
 
                     if (result)
                         Application.Current.MainPage = new AppShell();
-                }));
+                });
             }, null);
 
         if (result)

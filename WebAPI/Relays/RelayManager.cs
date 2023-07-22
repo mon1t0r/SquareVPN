@@ -42,7 +42,9 @@ namespace WebAPI.Relays
                         apiRelays.Add(new()
                         {
                             Hostname = relay.Hostname,
-                            IPV4 = relay.IPV4
+                            IPV4 = relay.IPV4,
+                            Port = relay.Port,
+                            PublicKey = relay.PublicKey
                         });
                     }
 

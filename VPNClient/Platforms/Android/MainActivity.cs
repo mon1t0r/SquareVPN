@@ -5,6 +5,7 @@ using Android.OS;
 using API.Responses.Models.Relays;
 using Com.Wireguard.Android.Backend;
 using Com.Wireguard.Config;
+using Java.Lang;
 using Java.Net;
 using VPNClient.Classes;
 using VPNClient.Platforms.Android.Classes;
@@ -20,11 +21,12 @@ namespace VPNClient
         {
             base.OnCreate(savedInstanceState);
             Instance = this;
+
+            PersistentConnectionProperties.Instance.Backend = new GoBackend(this);
         }
 
         public void ConnectToRelay(APIRelay relay)
         {
-            var tunnel = new WgTunnel();
             var intentPrepare = VpnService.Prepare(this);
             if (intentPrepare != null)
                 StartActivityForResult(intentPrepare, 0);
@@ -32,11 +34,12 @@ namespace VPNClient
             var interfaceBuilder = new Interface.Builder();
             var peerBuilder = new Peer.Builder();
 
-            var backend = new GoBackend(this);
+            PersistentConnectionProperties.Instance.Backend = new GoBackend(this);
 
             Task.Run(() =>
             {
-                backend.SetState(tunnel, ITunnel.State.Up, new Config.Builder()
+                PersistentConnectionProperties.Instance.Backend
+                .SetState(PersistentConnectionProperties.Instance.Tunnel, ITunnel.State.Up, new Config.Builder()
                             .SetInterface(interfaceBuilder
                                 .AddAddress(InetNetwork.Parse($"{SessionManager.CurrentSession.Device.IPV4Address}/32"))
                                 .AddDnsServers(new List<InetAddress>() { InetAddress.GetByName("8.8.8.8"), InetAddress.GetByName("1.1.1.1") })
@@ -47,6 +50,12 @@ namespace VPNClient
                                 .ParsePublicKey(relay.PublicKey).Build())
                             .Build());
             });
+        }
+
+        public static void DisconnectFromRelay()
+        {
+            PersistentConnectionProperties.Instance.Backend
+                .SetState(PersistentConnectionProperties.Instance.Tunnel, ITunnel.State.Down, null);
         }
     }
 }

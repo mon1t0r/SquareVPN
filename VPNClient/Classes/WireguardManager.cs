@@ -17,6 +17,15 @@ namespace VPNClient.Classes
 #endif
         }
 
+        public static void DisconnectFromRelay()
+        {
+#if ANDROID
+            MainActivity.DisconnectFromRelay();
+#elif WINDOWS
+            //TODO: connect windows
+#endif
+        }
+
         public static void SetTunnelStateChangeCallback(Action<string> callback) =>
             OnTunnelStateChange = callback;
 
