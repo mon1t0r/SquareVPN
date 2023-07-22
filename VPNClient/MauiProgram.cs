@@ -7,8 +7,6 @@ namespace VPNClient
     {
         public static MauiApp CreateMauiApp()
         {
-            SessionManager.Initialize();
-
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -19,7 +17,15 @@ namespace VPNClient
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            return builder.Build();
+            var app = builder.Build();
+
+            Task.Run(async () =>
+            {
+                SessionManager.Initialize();
+                //await SessionManager.LoadSessionAsync();
+            }).Wait();
+
+            return app;
         }
     }
 }

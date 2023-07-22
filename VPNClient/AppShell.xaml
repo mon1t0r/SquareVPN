@@ -3,12 +3,20 @@
     x:Class="VPNClient.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:VPNClient"
-    Shell.FlyoutBehavior="Disabled">
+    xmlns:local="clr-namespace:VPNClient.Pages"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.NavBarIsVisible="False">
 
-    <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate local:LoginPage}"
-        Route="LoginPage" />
+    <TabBar>
+        <Tab>
+            <ShellContent
+                Title="Connect"
+                ContentTemplate="{DataTemplate local:ConnectPage}" />
+
+            <ShellContent
+                Title="Info"
+                ContentTemplate="{DataTemplate local:InfoPage}" />
+        </Tab>
+    </TabBar>
 
 </Shell>

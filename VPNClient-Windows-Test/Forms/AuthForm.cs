@@ -12,7 +12,7 @@ namespace VPNClient_Windows_Test.Forms
 
         private async void LoginButton_Click(object sender, EventArgs e)
         {
-            var session = new APISession();
+            var session = new APISession("https://localhost:44317/");
             bool result = await session.Login(ulong.Parse(UserIdTextBox.Text), WireguardKeyUtils.GenKeyPair(), (message) => RemoveDevicesListTextBox.Text = message.Replace("\\n", "\r\n").Replace("\\", ""), RemoveDeviceTextBox.Text);
 
             if (result)

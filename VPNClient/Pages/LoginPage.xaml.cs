@@ -1,7 +1,7 @@
 using API;
 using VPNClient.Classes;
 
-namespace VPNClient;
+namespace VPNClient.Pages;
 
 public partial class LoginPage : ContentPage
 {
@@ -19,7 +19,7 @@ public partial class LoginPage : ContentPage
 
         if (result)
         {
-            Application.Current.MainPage = new NavigationPage(new MainPage());
+            Application.Current.MainPage = new AppShell();
         }
     }
 }

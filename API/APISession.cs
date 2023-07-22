@@ -14,8 +14,28 @@ namespace API
         public APIDevice? Device { get; set; }
         public string? PrivateKey { get; set; }
 
+        public bool IsActive
+        {
+            get => TokenPair != null && Device != null && PrivateKey != null;
+        }
+
+        [JsonIgnore]
+        public APIEndpoints APIEndpoints;
+
         public delegate void DataUpdatedEventHandler();
-        public event DataUpdatedEventHandler OnDataUpdated;
+        public event DataUpdatedEventHandler? OnDataUpdated;
+        public delegate void LogoutEventHandler();
+        public event LogoutEventHandler? OnLogout;
+
+        public APISession()
+        {
+            
+        }
+
+        public APISession(string endpoint)
+        {
+            APIEndpoints = new APIEndpoints(endpoint);
+        }
 
         public async Task<bool> Login(ulong userId, (string, string) keyPair, Action<string> maxDevicesCallback, string? deviceRemoveUUID = null)
         {
@@ -46,7 +66,7 @@ namespace API
                     Device = responseData.Device;
                     PrivateKey = keyPair.Item1;
 
-                    OnDataUpdated.Invoke();
+                    OnDataUpdated?.Invoke();
 
                     return true;
                 }
@@ -69,11 +89,7 @@ namespace API
 
             if(response.IsSuccessStatusCode)
             {
-                TokenPair = null;
-                Device = null;
-                PrivateKey = null;
-
-                OnDataUpdated.Invoke();
+                ClearSession();
 
                 return true;
             }
@@ -144,7 +160,7 @@ namespace API
 
             TokenPair = refreshResponse;
 
-            OnDataUpdated.Invoke();
+            OnDataUpdated?.Invoke();
 
             return true;
         }
@@ -162,10 +178,28 @@ namespace API
 
             var response = await HttpClient.SendAsync(request);
 
-            if (authorize && response.StatusCode == HttpStatusCode.Unauthorized && await RefreshAccessToken())
+            if (authorize && response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                if(!await RefreshAccessToken())
+                {
+                    ClearSession();
+                    return response;
+                }
                 return await SendRequestAsync(httpMethod, endpoint, requestData);
+            }
+                
 
             return response;
+        }
+
+        private void ClearSession()
+        {
+            TokenPair = null;
+            Device = null;
+            PrivateKey = null;
+
+            OnDataUpdated?.Invoke();
+            OnLogout?.Invoke();
         }
     }
 }
