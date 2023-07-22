@@ -12,7 +12,7 @@
             <Label
                 x:Name="StatusLabel"
                 FontSize="30"
-                Text="Not connected" />
+                Text="Down" />
 
             <Picker
                 x:Name="CountryPicker"

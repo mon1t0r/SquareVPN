@@ -57,6 +57,10 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\API\API.csproj" />
 	</ItemGroup>
+  
+  <ItemGroup Condition="$(TargetFramework.Contains('-android')) != false ">
+    <ProjectReference Include="..\WireguardTunnelAndroidBinding\WireguardTunnelAndroidBinding.csproj" />
+  </ItemGroup>
 
 	<ItemGroup>
 	  <Compile Update="Pages\ConnectPage.xaml.cs">

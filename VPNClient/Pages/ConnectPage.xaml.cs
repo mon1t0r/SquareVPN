@@ -16,9 +16,20 @@ public partial class ConnectPage : ContentPage
         RelayPicker.SelectedIndex = 0;
     }
 
-    private void ConnectButton_Clicked(object sender, EventArgs e)
+    private async void ConnectButton_Clicked(object sender, EventArgs e)
     {
-
+        var relay = (APIRelay)RelayPicker.SelectedItem;
+        if (relay != null)
+        {
+            WireguardManager.SetTunnelStateChangeCallback((state) =>
+            {
+                MainThread.InvokeOnMainThreadAsync(async () =>
+                {
+                    StatusLabel.Text = state;
+                });
+            });
+            await WireguardManager.ConnectToRelay(relay);
+        }
     }
 
     private void CountryPicker_SelectedIndexChanged(object sender, EventArgs e)

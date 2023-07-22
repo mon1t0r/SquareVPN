@@ -69,7 +69,7 @@ namespace API
                     Device = responseData.Device;
                     PrivateKey = keyPair.Item1;
 
-                    if(OnDataUpdated != null)
+                    if (OnDataUpdated != null)
                         await OnDataUpdated.Invoke();
                     if(OnLogin != null)
                         await OnLogin.Invoke();
