@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /WebAPI/appsettings.secrets.json
 /WebAPI/relays.json
+/WebAPI/devicenames.json
+/VPNServer/relaysettings.json
