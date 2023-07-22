@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VPNClient", "VPNClient\VPNC
 		{0F3E9070-DA1F-490F-98D9-6248DD4BCC3E} = {0F3E9070-DA1F-490F-98D9-6248DD4BCC3E}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WireguardTunnelAndroidBinding", "WireguardTunnelAndroidBinding\WireguardTunnelAndroidBinding.csproj", "{B1D595E6-D4D3-4DD6-95D3-A867539855CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,14 @@ Global
 		{D86DB1DA-B9A7-4ACE-8BDE-AC2E0E533263}.Release|x64.ActiveCfg = Release|Any CPU
 		{D86DB1DA-B9A7-4ACE-8BDE-AC2E0E533263}.Release|x64.Build.0 = Release|Any CPU
 		{D86DB1DA-B9A7-4ACE-8BDE-AC2E0E533263}.Release|x64.Deploy.0 = Release|Any CPU
+		{B1D595E6-D4D3-4DD6-95D3-A867539855CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1D595E6-D4D3-4DD6-95D3-A867539855CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1D595E6-D4D3-4DD6-95D3-A867539855CF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B1D595E6-D4D3-4DD6-95D3-A867539855CF}.Debug|x64.Build.0 = Debug|Any CPU
+		{B1D595E6-D4D3-4DD6-95D3-A867539855CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1D595E6-D4D3-4DD6-95D3-A867539855CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1D595E6-D4D3-4DD6-95D3-A867539855CF}.Release|x64.ActiveCfg = Release|Any CPU
+		{B1D595E6-D4D3-4DD6-95D3-A867539855CF}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
