@@ -5,6 +5,7 @@ using Android.OS;
 using API.Responses.Models.Relays;
 using Com.Wireguard.Android.Backend;
 using Com.Wireguard.Config;
+using Java.Net;
 using VPNClient.Classes;
 using VPNClient.Platforms.Android.Classes;
 
@@ -36,8 +37,14 @@ namespace VPNClient
             Task.Run(() =>
             {
                 backend.SetState(tunnel, ITunnel.State.Up, new Config.Builder()
-                            .SetInterface(interfaceBuilder.AddAddress(InetNetwork.Parse($"{SessionManager.CurrentSession.Device.IPV4Address}/32")).ParsePrivateKey(SessionManager.CurrentSession.PrivateKey).Build())
-                            .AddPeer(peerBuilder.AddAllowedIp(InetNetwork.Parse("0.0.0.0/0")).SetEndpoint(InetEndpoint.Parse($"{relay.IPV4}:{relay.Port}")).ParsePublicKey(relay.PublicKey).Build())
+                            .SetInterface(interfaceBuilder
+                                .AddAddress(InetNetwork.Parse($"{SessionManager.CurrentSession.Device.IPV4Address}/32"))
+                                .AddDnsServers(new List<InetAddress>() { InetAddress.GetByName("8.8.8.8"), InetAddress.GetByName("1.1.1.1") })
+                                .ParsePrivateKey(SessionManager.CurrentSession.PrivateKey).Build())
+                            .AddPeer(peerBuilder
+                                .AddAllowedIp(InetNetwork.Parse("0.0.0.0/0"))
+                                .SetEndpoint(InetEndpoint.Parse($"{relay.IPV4}:{relay.Port}"))
+                                .ParsePublicKey(relay.PublicKey).Build())
                             .Build());
             });
         }
