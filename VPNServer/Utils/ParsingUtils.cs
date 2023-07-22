@@ -42,7 +42,7 @@ namespace VPNServer.Utils
                     int h = 0, m = 0, s = 0;
 
                     int index;
-                    if ((index = str.IndexOf("seconds")) != -1 || (index = str.IndexOf("second")) != -1)
+                    if ((index = str.IndexOf("seconds")) != -1 || (index = str.IndexOf("second")) != -1)//TODO: Rewrite, buggy
                         s = int.Parse(str.Substring(index - 3, 2));
 
                     if ((index = str.IndexOf("minutes")) != -1 || (index = str.IndexOf("minute")) != -1)
