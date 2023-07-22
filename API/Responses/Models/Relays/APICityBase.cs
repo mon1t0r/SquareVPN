@@ -13,5 +13,7 @@ namespace API.Responses.Models.Relays
         public string Name { get; set; }
         [JsonProperty("code")]
         public string CityCode { get; set; }
+
+        public override string ToString() => Name;
     }
 }

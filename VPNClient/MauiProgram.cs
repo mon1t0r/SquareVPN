@@ -21,8 +21,7 @@ namespace VPNClient
 
             Task.Run(async () =>
             {
-                SessionManager.Initialize();
-                //await SessionManager.LoadSessionAsync();
+                await SessionManager.Initialize();
             }).Wait();
 
             return app;

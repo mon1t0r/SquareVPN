@@ -1,5 +1,6 @@
 ﻿using API.Responses;
 using API.Responses.Models;
+using API.Responses.Models.Relays;
 using API.Utils;
 using Newtonsoft.Json;
 using System.Net;
@@ -24,6 +25,10 @@ namespace API
 
         public delegate void DataUpdatedEventHandler();
         public event DataUpdatedEventHandler? OnDataUpdated;
+
+        public delegate void LoginEventHandler();
+        public event LoginEventHandler? OnLogin;
+
         public delegate void LogoutEventHandler();
         public event LogoutEventHandler? OnLogout;
 
@@ -67,6 +72,7 @@ namespace API
                     PrivateKey = keyPair.Item1;
 
                     OnDataUpdated?.Invoke();
+                    OnLogin?.Invoke();
 
                     return true;
                 }
@@ -80,21 +86,10 @@ namespace API
             return false;
         }
 
-        public async Task<bool> Logout()
+        public async Task Logout()
         {
-            var response = await SendRequestAsync(HttpMethod.Post, APIEndpoints.RemoveCurrentDevice);
-
-            if (response == null || response.Content == null)
-                return false;
-
-            if(response.IsSuccessStatusCode)
-            {
-                ClearSession();
-
-                return true;
-            }
-
-            return false;
+            await SendRequestAsync(HttpMethod.Post, APIEndpoints.RemoveCurrentDevice);
+            ClearSession();
         }
 
         public async Task<bool> ConnectPeer(string hostname)
@@ -112,14 +107,16 @@ namespace API
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<string> GetRelays()
+        public async Task<List<APICountry>?> GetRelays()
         {
             var response = await SendRequestAsync(HttpMethod.Get, APIEndpoints.Relays);
 
             if (response == null || response.Content == null || !response.IsSuccessStatusCode)
-                return string.Empty;
+                return null;
 
-            return await response.Content.ReadAsStringAsync();
+            var relaysResponse = JsonConvert.DeserializeObject<List<APICountry>>(await response.Content.ReadAsStringAsync());
+
+            return relaysResponse;
         }
 
         public async Task<DateTime?> GetPaidUntil()

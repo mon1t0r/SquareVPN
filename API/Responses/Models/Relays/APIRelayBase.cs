@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace API.Responses.Models.Relays
 {
@@ -13,6 +14,8 @@ namespace API.Responses.Models.Relays
         [JsonProperty("hostname")]
         public string Hostname { get; set; }
         [JsonProperty("ipv4")]
-        public IPAddress IPV4 { get; set; }
+        public string IPV4 { get; set; }
+
+        public override string ToString() => Hostname;
     }
 }

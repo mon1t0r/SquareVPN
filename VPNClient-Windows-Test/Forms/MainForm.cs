@@ -71,8 +71,8 @@ namespace VPNClient_Windows_Test.Forms
 
         private async void RefreshRelaysButton_Click(object sender, EventArgs e)
         {
-            if (SessionManager.CurrentSession != null)
-                RelaysTextBox.Text = (await SessionManager.CurrentSession.GetRelays())?.Replace("\n", "\r\n");
+            /*if (SessionManager.CurrentSession != null)
+                RelaysTextBox.Text = (await SessionManager.CurrentSession.GetRelays())?.Replace("\n", "\r\n");*/
         }
 
         private async void PaidUntilButton_Click(object sender, EventArgs e)

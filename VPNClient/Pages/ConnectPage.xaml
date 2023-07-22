@@ -17,12 +17,14 @@
             <Picker
                 x:Name="CountryPicker"
                 FontSize="20"
-                Title="Country" />
+                Title="Country"
+                SelectedIndexChanged="CountryPicker_SelectedIndexChanged" />
 
             <Picker
                 x:Name="CityPicker"
                 FontSize="20"
-                Title="City" />
+                Title="City"
+                SelectedIndexChanged="CityPicker_SelectedIndexChanged" />
 
             <Picker
                 x:Name="RelayPicker"
