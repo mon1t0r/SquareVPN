@@ -35,8 +35,7 @@
     </VerticalStackLayout>
 
     <ContentPage.Behaviors>
-        <toolkit:StatusBarBehavior StatusBarColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}">
-        </toolkit:StatusBarBehavior>
+        <toolkit:StatusBarBehavior StatusBarColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
     </ContentPage.Behaviors>
 
 </ContentPage>
