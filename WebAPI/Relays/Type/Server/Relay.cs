@@ -8,5 +8,7 @@ namespace WebAPI.Relays.Type.Server
     {
         [JsonProperty("private_ipv4")]
         public IPAddress PrivateIPV4 { get; set; }
+        [JsonProperty("avaliable")]
+        public bool Avaliable { get; set; }
     }
 }

@@ -39,13 +39,14 @@ namespace WebAPI.Relays
                     var apiRelays = new List<APIRelay>();
                     foreach (var relay in city.Relays)
                     {
-                        apiRelays.Add(new()
-                        {
-                            Hostname = relay.Hostname,
-                            IPV4 = relay.IPV4,
-                            Port = relay.Port,
-                            PublicKey = relay.PublicKey
-                        });
+                        if(relay.Avaliable)
+                            apiRelays.Add(new()
+                            {
+                                Hostname = relay.Hostname,
+                                IPV4 = relay.IPV4,
+                                Port = relay.Port,
+                                PublicKey = relay.PublicKey
+                            });
                     }
 
                     apiCities.Add(new()
