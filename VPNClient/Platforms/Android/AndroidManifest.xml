@@ -1,16 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mon1tor.squarevpn">
-	<application android:allowBackup="true" android:icon="@mipmap/appicon" android:supportsRtl="true" android:label="Square VPN"
-               android:usesCleartextTraffic="true">
-    <service
-        android:name="Com.Wireguard.Android.Backend.GoBackend$VpnService"
-        android:exported="true"
-        android:permission="android.permission.BIND_VPN_SERVICE">
-      <intent-filter>
-        <action android:name="android.net.VpnService" />
-      </intent-filter>
-    </service>
-  </application>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mon1tor.squarevpn" android:versionName="v1.0">
+	<application android:allowBackup="true" android:icon="@mipmap/appicon" android:supportsRtl="true" android:label="Square VPN">
+		<service android:name="Com.Wireguard.Android.Backend.GoBackend$VpnService" android:exported="true" android:permission="android.permission.BIND_VPN_SERVICE">
+			<intent-filter>
+				<action android:name="android.net.VpnService" />
+			</intent-filter>
+		</service>
+	</application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-sdk android:minSdkVersion="28" android:targetSdkVersion="33" />
