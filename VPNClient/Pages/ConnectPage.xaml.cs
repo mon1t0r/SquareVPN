@@ -16,12 +16,15 @@ public partial class ConnectPage : ContentPage
         CountryPicker.SelectedIndex = 0;
         CityPicker.SelectedIndex = 0;
         RelayPicker.SelectedIndex = 0;
+
+        UpdateUI();
     }
 
     private async void ConnectButton_Clicked(object sender, EventArgs e)
     {
         if(TunnelState != WgTunnelState.Down)
         {
+            ConnectButton.IsEnabled = false;
             WireguardManager.DisconnectFromRelay();
             return;
         }
@@ -34,9 +37,10 @@ public partial class ConnectPage : ContentPage
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
                     TunnelState = state;
-                    UpdateTunnelStateUI();
+                    UpdateUI();
                 });
             });
+            ConnectButton.IsEnabled = false;
             await WireguardManager.ConnectToRelay(relay);
         }
     }
@@ -67,9 +71,10 @@ public partial class ConnectPage : ContentPage
             RelayPicker.ItemsSource = null;
     }
 
-    private void UpdateTunnelStateUI()
+    private void UpdateUI()
     {
         StatusLabel.Text = TunnelState.ToString();
         ConnectButton.Text = TunnelState != WgTunnelState.Down ? "Disconnect" : "Connect";
+        ConnectButton.IsEnabled = SessionManager.PaidUntil != null && SessionManager.PaidUntil.Value >= DateTime.Now;
     }
 }

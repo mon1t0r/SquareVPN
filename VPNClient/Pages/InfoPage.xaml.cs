@@ -8,7 +8,13 @@ public partial class InfoPage : ContentPage
 	{
 		InitializeComponent();
 		DeviceNameEntry.Text = SessionManager.CurrentSession.Device.Name;
-		PaidUntilEntry.Text = SessionManager.PaidUntil != null ? SessionManager.PaidUntil.ToString() : string.Empty;
+		if (SessionManager.PaidUntil != null)
+		{
+			PaidUntilEntry.Text = SessionManager.PaidUntil.ToString();
+			if (SessionManager.PaidUntil.Value < DateTime.Now)
+				PaidUntilEntry.TextColor = Colors.Red;
+        }
+		
 	}
 
     private async void LogoutButton_Clicked(object sender, EventArgs e) =>
