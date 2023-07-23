@@ -8,8 +8,37 @@ namespace VPNClient
         public App()
         {
             InitializeComponent();
+            Initialize();
+        }
 
-            MainPage = SessionManager.CurrentSession.IsActive ? new AppShell() : new LoginPage();
+        public void Initialize()
+        {
+            bool noConnection = false;
+
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await SessionManager.Initialize();
+                }
+                catch
+                {
+                    noConnection = true;
+                }
+            }).Wait();
+
+            if (noConnection)
+                MainPage = new NoInternetConnectionPage();
+            else
+                SelectPage();
+        }
+
+        public void SelectPage()
+        {
+            if (SessionManager.CurrentSession.IsActive)
+                MainPage = new AppShell();
+            else
+                MainPage = new LoginPage();
         }
     }
 }

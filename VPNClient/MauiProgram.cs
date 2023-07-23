@@ -17,14 +17,7 @@ namespace VPNClient
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            var app = builder.Build();
-
-            Task.Run(async () =>
-            {
-                await SessionManager.Initialize();
-            }).Wait();
-
-            return app;
+            return builder.Build();
         }
     }
 }

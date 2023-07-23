@@ -4,11 +4,12 @@ namespace VPNClient.Classes
 {
     public class WireguardManager
     {
-        private static Action<string> OnTunnelStateChange;
+        private static Action<WgTunnelState> OnTunnelStateChange;
 
         public static async Task ConnectToRelay(APIRelay relay)
         {
-            await SessionManager.CurrentSession.ConnectPeer(relay.Hostname);
+            if (!await SessionManager.CurrentSession.ConnectPeer(relay.Hostname))
+                return;
 
 #if ANDROID
             MainActivity.Instance.ConnectToRelay(relay);
@@ -26,10 +27,10 @@ namespace VPNClient.Classes
 #endif
         }
 
-        public static void SetTunnelStateChangeCallback(Action<string> callback) =>
+        public static void SetTunnelStateChangeCallback(Action<WgTunnelState> callback) =>
             OnTunnelStateChange = callback;
 
-        public static void CallTunnelStateChange(string state) =>
+        public static void CallTunnelStateChange(WgTunnelState state) =>
             OnTunnelStateChange?.Invoke(state);
     }
 }

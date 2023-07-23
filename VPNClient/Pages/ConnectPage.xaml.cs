@@ -5,6 +5,8 @@ namespace VPNClient.Pages;
 
 public partial class ConnectPage : ContentPage
 {
+    private WgTunnelState TunnelState { get; set; } = WgTunnelState.Down;
+
     public ConnectPage()
     {
         InitializeComponent();
@@ -16,9 +18,9 @@ public partial class ConnectPage : ContentPage
         RelayPicker.SelectedIndex = 0;
     }
 
-    private async void ConnectButton_Clicked(object sender, EventArgs e)//TODO: Rewrite
+    private async void ConnectButton_Clicked(object sender, EventArgs e)
     {
-        if(ConnectButton.Text == "Disconnect")
+        if(TunnelState != WgTunnelState.Down)
         {
             WireguardManager.DisconnectFromRelay();
             return;
@@ -29,10 +31,10 @@ public partial class ConnectPage : ContentPage
         {
             WireguardManager.SetTunnelStateChangeCallback((state) =>
             {
-                MainThread.InvokeOnMainThreadAsync(async () =>
+                MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    StatusLabel.Text = state;
-                    ConnectButton.Text = state == "UP" ? "Disconnect" : "Connect";
+                    TunnelState = state;
+                    UpdateTunnelStateUI();
                 });
             });
             await WireguardManager.ConnectToRelay(relay);
@@ -63,5 +65,11 @@ public partial class ConnectPage : ContentPage
         }
         else
             RelayPicker.ItemsSource = null;
+    }
+
+    private void UpdateTunnelStateUI()
+    {
+        StatusLabel.Text = TunnelState.ToString();
+        ConnectButton.Text = TunnelState != WgTunnelState.Down ? "Disconnect" : "Connect";
     }
 }

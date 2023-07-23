@@ -9,7 +9,7 @@
         
         <Label 
             Text="Choose device to replace"
-            FontSize="15"
+            FontSize="25"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
@@ -26,7 +26,7 @@
 
         <Button
             x:Name="ReplaceDeviceButton"
-            FontSize="15"
+            FontSize="25"
             HorizontalOptions="Fill"
             Text="Replace device"
             Clicked="ReplaceDeviceButton_Clicked" />

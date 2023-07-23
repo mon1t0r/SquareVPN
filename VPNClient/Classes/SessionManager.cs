@@ -43,6 +43,16 @@ namespace VPNClient.Classes
             return Task.CompletedTask;
         }
 
+        private static Task CurrentSession_OnRequestException(Exception ex)
+        {
+            if (Application.Current == null || Application.Current.MainPage == null || Application.Current.MainPage is NoInternetConnectionPage)
+                throw ex;
+
+            Application.Current.MainPage = new NoInternetConnectionPage();
+
+            return Task.CompletedTask;
+        }
+
         private static async Task UpdatePaidUntilAsync()
         {
             if (CurrentSession.IsActive)
@@ -83,6 +93,7 @@ namespace VPNClient.Classes
             CurrentSession.OnDataUpdated = CurrentSession_OnDataUpdated;
             CurrentSession.OnLogin = CurrentSession_OnLogin;
             CurrentSession.OnLogout = CurrentSession_OnLogout;
+            CurrentSession.OnRequestException = CurrentSession_OnRequestException;
         }
     }
 }

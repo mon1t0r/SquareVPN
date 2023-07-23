@@ -5,7 +5,6 @@ using Android.OS;
 using API.Responses.Models.Relays;
 using Com.Wireguard.Android.Backend;
 using Com.Wireguard.Config;
-using Java.Lang;
 using Java.Net;
 using VPNClient.Classes;
 using VPNClient.Platforms.Android.Classes;

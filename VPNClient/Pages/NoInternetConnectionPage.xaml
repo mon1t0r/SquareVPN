@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VPNClient.Pages.NoInternetConnectionPage">
+    <VerticalStackLayout
+        Spacing="20"
+        Padding="25, 20"
+        VerticalOptions="Start">
+
+        <Label 
+            Text="No internet connection"
+            FontSize="25"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Button
+            x:Name="RetryButton"
+            FontSize="25"
+            HorizontalOptions="Fill"
+            Text="Retry"
+            Clicked="RetryButton_Clicked" />
+
+    </VerticalStackLayout>
+</ContentPage>

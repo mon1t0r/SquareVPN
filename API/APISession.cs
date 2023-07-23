@@ -29,6 +29,7 @@ namespace API
         public Func<Task>? OnDataUpdated;
         public Func<Task>? OnLogin;
         public Func<Task>? OnLogout;
+        public Func<Exception, Task>? OnRequestException;
 
         public APISession()
         {
@@ -165,7 +166,7 @@ namespace API
             return true;
         }
 
-        private async Task<HttpResponseMessage> SendRequestAsync(HttpMethod httpMethod, Uri endpoint, Dictionary<string, string>? requestData = null, bool authorize = true)
+        private async Task<HttpResponseMessage?> SendRequestAsync(HttpMethod httpMethod, Uri endpoint, Dictionary<string, string>? requestData = null, bool authorize = true)
         {
             authorize &= TokenPair != null && !string.IsNullOrWhiteSpace(TokenPair.AccessToken);
 
@@ -176,7 +177,18 @@ namespace API
             if (requestData != null)
                 request.Content = new FormUrlEncodedContent(requestData);
 
-            var response = await HttpClient.SendAsync(request);
+            HttpResponseMessage? response;
+
+            try
+            {
+                response = await HttpClient.SendAsync(request);
+            }
+            catch(Exception ex)
+            {
+                if (OnRequestException != null)
+                    await OnRequestException.Invoke(ex);
+                return null;
+            }
 
             if (authorize && response.StatusCode == HttpStatusCode.Unauthorized)
             {
