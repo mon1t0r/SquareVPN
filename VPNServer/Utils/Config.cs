@@ -11,6 +11,8 @@ namespace VPNServer.Utils
         public string ControlServerAddress { get; private set; }
         [JsonProperty("ControlServerPort")]
         public int ControlServerPort { get; private set; }
+        [JsonProperty("PeerRemoveIntervalSeconds")]
+        public int PeerRemoveIntervalSeconds { get; private set; }
 
         public static void Initialize()
         {

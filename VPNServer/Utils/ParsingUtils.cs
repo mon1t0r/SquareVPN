@@ -42,14 +42,20 @@ namespace VPNServer.Utils
                     int h = 0, m = 0, s = 0;
 
                     int index;
-                    if ((index = str.IndexOf("seconds")) != -1 || (index = str.IndexOf("second")) != -1)//TODO: Rewrite, buggy
+                    if ((index = str.IndexOf("seconds")) != -1)
                         s = int.Parse(str.Substring(index - 3, 2));
+                    if((index = str.IndexOf("second")) != -1)
+                        s = int.Parse(str.Substring(index - 2, 1));
 
-                    if ((index = str.IndexOf("minutes")) != -1 || (index = str.IndexOf("minute")) != -1)
+                    if ((index = str.IndexOf("minutes")) != -1)
                         m = int.Parse(str.Substring(index - 3, 2));
+                    if ((index = str.IndexOf("minute")) != -1)
+                        m = int.Parse(str.Substring(index - 2, 1));
 
-                    if ((index = str.IndexOf("hours")) != -1 || (index = str.IndexOf("hour")) != -1)
+                    if ((index = str.IndexOf("hours")) != -1)
                         h = int.Parse(str.Substring(index - 3, 2));
+                    if ((index = str.IndexOf("hour")) != -1)
+                        h = int.Parse(str.Substring(index - 2, 1));
 
                     curPeer.LatestHandshakeTimestamp = DateTime.Now - TimeSpan.FromSeconds(h * 3600 + m * 60 + s);
                 }
