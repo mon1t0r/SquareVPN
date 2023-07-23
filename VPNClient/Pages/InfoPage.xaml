@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="VPNClient.Pages.InfoPage">
     
     <VerticalStackLayout
@@ -19,8 +20,7 @@
             FontSize="25"
             IsReadOnly="True"
             FontAttributes="Bold"
-            HorizontalTextAlignment="Center"
-            BackgroundColor="LightGray" />
+            HorizontalTextAlignment="Center" />
 
         <Label
             Margin="0, 10, 0, 0"
@@ -34,8 +34,7 @@
             FontSize="25"
             IsReadOnly="True"
             FontAttributes="Bold"
-            HorizontalTextAlignment="Center"
-            BackgroundColor="LightGray" />
+            HorizontalTextAlignment="Center" />
 
         <Button
             Margin="0, 10, 0, 0"
@@ -46,5 +45,10 @@
             Clicked="LogoutButton_Clicked" />
 
     </VerticalStackLayout>
-    
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}">
+        </toolkit:StatusBarBehavior>
+    </ContentPage.Behaviors>
+
 </ContentPage>

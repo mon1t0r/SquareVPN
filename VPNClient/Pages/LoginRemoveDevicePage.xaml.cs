@@ -22,4 +22,7 @@ public partial class LoginRemoveDevicePage : ContentPage
 			return;
 		ReplaceDeviceCallback.Invoke((APIDevice)DevicesListView.SelectedItem);
     }
+
+    private void CancelButton_Clicked(object sender, EventArgs e) =>
+        Application.Current.MainPage = new LoginPage();
 }
