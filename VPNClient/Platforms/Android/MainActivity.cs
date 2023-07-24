@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.Net;
 using Android.OS;
@@ -24,14 +25,37 @@ namespace VPNClient
             PersistentConnectionProperties.Instance.Backend = new GoBackend(this);
         }
 
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if(requestCode == 1)
+            {
+                if(resultCode == Result.Ok && PersistentConnectionProperties.Instance.Relay != null)
+                    StartTunnel();
+                else
+                    WireguardManager.CallTunnelStateChange(WgTunnelState.Down);
+            }
+        }
+
         public void ConnectToRelay(APIRelay relay)
         {
-            var intentPrepare = VpnService.Prepare(this);
-            if (intentPrepare != null)
-                StartActivityForResult(intentPrepare, 0);
+            PersistentConnectionProperties.Instance.Relay = relay;
 
+            var intent = VpnService.Prepare(this);
+            if (intent != null)
+            {
+                intent.SetFlags(ActivityFlags.SingleTop);
+                StartActivityForResult(intent, 1);
+            }
+            else
+                StartTunnel();
+        }
+
+        private void StartTunnel()
+        {
             var interfaceBuilder = new Interface.Builder();
             var peerBuilder = new Peer.Builder();
+            var relay = PersistentConnectionProperties.Instance.Relay;
 
             PersistentConnectionProperties.Instance.Backend = new GoBackend(this);
 
@@ -55,6 +79,7 @@ namespace VPNClient
         {
             PersistentConnectionProperties.Instance.Backend
                 .SetState(PersistentConnectionProperties.Instance.Tunnel, ITunnel.State.Down, null);
+            PersistentConnectionProperties.Instance.Relay = null;
         }
     }
 }

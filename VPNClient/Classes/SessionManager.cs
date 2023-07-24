@@ -3,8 +3,6 @@ using API;
 using API.Utils;
 using VPNClient.Pages;
 using API.Responses.Models.Relays;
-using System.Net;
-using Javax.Crypto.Interfaces;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 

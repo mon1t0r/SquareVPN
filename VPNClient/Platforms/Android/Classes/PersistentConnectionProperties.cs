@@ -1,4 +1,5 @@
-﻿using Com.Wireguard.Android.Backend;
+﻿using API.Responses.Models.Relays;
+using Com.Wireguard.Android.Backend;
 using Java.Lang;
 using Kotlin.Jvm;
 using System;
@@ -18,5 +19,6 @@ namespace VPNClient.Platforms.Android.Classes
 
         public WgTunnel Tunnel { get => _Tunnel ??= new WgTunnel(); }
         public GoBackend Backend { get; set; }
+        public APIRelay Relay { get; set; }
     }
 }

@@ -43,7 +43,7 @@
     </ScrollView>
 
     <ContentPage.Behaviors>
-        <toolkit:StatusBarBehavior StatusBarColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}">
+        <toolkit:StatusBarBehavior StatusBarColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Gray950}}">
         </toolkit:StatusBarBehavior>
     </ContentPage.Behaviors>
 
