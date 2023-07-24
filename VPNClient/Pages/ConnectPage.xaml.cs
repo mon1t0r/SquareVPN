@@ -13,9 +13,12 @@ public partial class ConnectPage : ContentPage
 
         CountryPicker.ItemsSource = SessionManager.Countries;
 
-        CountryPicker.SelectedIndex = 0;
-        CityPicker.SelectedIndex = 0;
-        RelayPicker.SelectedIndex = 0;
+        if(CountryPicker.Items.Count > 0)
+            CountryPicker.SelectedIndex = 0;
+        if(CityPicker.Items.Count > 0)
+            CityPicker.SelectedIndex = 0;
+        if(RelayPicker.Items.Count > 0)
+            RelayPicker.SelectedIndex = 0;
 
         UpdateUI();
     }
