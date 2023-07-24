@@ -13,13 +13,15 @@ namespace VPNClient
 
         public void Initialize()
         {
+            SessionManager.Initialize();
+
             bool noConnection = false;
 
             Task.Run(async () =>
             {
                 try
                 {
-                    await SessionManager.Initialize();
+                    await SessionManager.InitializeSession();
                 }
                 catch
                 {

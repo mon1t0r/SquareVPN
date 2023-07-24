@@ -85,16 +85,13 @@ namespace WebAPI.Controllers
 
             var accessToken = CreateAccessToken(authClaims);
             var refreshToken = CreateRefreshToken(64);
-
-            Device device = new Device
+            var device = new Device
             {
                 UUID = deviceUUID,
                 UserUUID = user.UUID,
                 PublicKey = publicKey,
                 Name = DeviceNames.GetRandomName(),
 
-                IPV4Address = string.Empty,
-                CreatedTimeStamp = DateTime.UtcNow,
                 RefreshToken = refreshToken
             };
 

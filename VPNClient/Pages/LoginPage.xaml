@@ -22,8 +22,7 @@
             Keyboard="Numeric"
             FontAttributes="Bold"
             HorizontalTextAlignment="Center"
-            Placeholder="0000 0000 0000 0000"
-            Text="2564197905887102" />
+            Placeholder="0000 0000 0000 0000" />
 
         <Button
             x:Name="LoginButton"

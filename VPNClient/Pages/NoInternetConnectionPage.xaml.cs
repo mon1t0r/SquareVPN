@@ -15,7 +15,7 @@ public partial class NoInternetConnectionPage : ContentPage
 
         try
         {
-            await SessionManager.Initialize();
+            await SessionManager.InitializeSession();
         }
         catch
         {

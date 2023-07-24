@@ -16,7 +16,7 @@ namespace VPNServer
             Thread peerUpdateThread = new(StartPeerUpdateThread);
             peerUpdateThread.Start();
 
-            Console.ReadLine();
+            while (true) ;
         }
 
         private static async void StartPeerUpdateThread()

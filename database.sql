@@ -9,7 +9,7 @@
 CREATE TABLE `device` (
   `device_uuid` char(36) NOT NULL,
   `user_uuid` char(36) NOT NULL,
-  `ipv4_address` varchar(15) NOT NULL DEFAULT '0',
+  `ipv4_address` varchar(16) NOT NULL DEFAULT '0',
   `name` varchar(45) NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `public_key` char(44) NOT NULL,

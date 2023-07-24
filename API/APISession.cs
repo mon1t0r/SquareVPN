@@ -4,13 +4,26 @@ using API.Responses.Models.Relays;
 using API.Utils;
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 namespace API
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class APISession
     {
-        private static readonly HttpClient HttpClient = new HttpClient();
+        private static HttpClient HttpClient = new HttpClient();
+
+        public static Func<HttpRequestMessage, X509Certificate2?, X509Chain?, SslPolicyErrors, bool>? ServerCertificateCustomValidationCallback
+        {
+            set
+            {
+                HttpClient = new HttpClient(new HttpClientHandler()
+                {
+                    ServerCertificateCustomValidationCallback = value
+                });
+            }
+        }
 
         [JsonProperty]
         public APITokenPair? TokenPair { get; set; }

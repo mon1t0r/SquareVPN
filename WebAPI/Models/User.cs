@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebAPI.Models
 {
-    [Table("User")]
+    [Table("user")]
     public class User
     {
         [Key, Column("user_uuid"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]

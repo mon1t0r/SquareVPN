@@ -45,7 +45,7 @@ namespace HelloApp
                 opt.UseMySql(
                     configuration["ConnectionStrings:DefaultConnection"],
                     new MySqlServerVersion(new Version(8, 0, 33))
-                ));
+                ).EnableSensitiveDataLogging().LogTo(System.Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information));
             services.AddEndpointsApiExplorer();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
@@ -104,7 +104,7 @@ namespace HelloApp
                 });
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseAuthentication();
 
