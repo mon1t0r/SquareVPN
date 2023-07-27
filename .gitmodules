@@ -1,0 +1,3 @@
+[submodule "ndisapi.net"]
+	path = ndisapi.net
+	url = https://github.com/wiresock/ndisapi.net
