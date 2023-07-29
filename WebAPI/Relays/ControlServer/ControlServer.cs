@@ -13,6 +13,8 @@ namespace WebAPI.Relays.ControlServer
         {
             foreach (TcpSession session in Sessions.Values)
             {
+                if (session.IsDisposed || session.IsSocketDisposed || !session.IsConnected)
+                    continue;
                 IPEndPoint? remoteEndPoint = session.Socket.RemoteEndPoint as IPEndPoint;
                 if (remoteEndPoint == null)
                     continue;

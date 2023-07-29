@@ -5,7 +5,10 @@ namespace VPNServer.RelayControl
 {
     public class ControlClient : TcpClient
     {
-        public ControlClient(string address, int port) : base(address, port) { }
+        public ControlClient(string address, int port) : base(address, port)
+        {
+            OptionKeepAlive = true;
+        }
 
         public void DisconnectAndStop()
         {
