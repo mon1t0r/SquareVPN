@@ -28,7 +28,7 @@ public partial class ConnectPage : ContentPage
         if(TunnelState != WgTunnelState.Down)
         {
             ConnectButton.IsEnabled = false;
-            WireguardManager.DisconnectFromRelay();
+            await WireguardManager.DisconnectFromRelay();
             return;
         }
 

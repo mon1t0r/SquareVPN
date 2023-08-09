@@ -14,16 +14,16 @@ namespace VPNClient.Classes
 #if ANDROID
             MainActivity.Instance.ConnectToRelay(relay);
 #elif WINDOWS
-            //TODO: connect windows
+            await WireguardManagerWindows.ConnectToRelay(relay);
 #endif
         }
 
-        public static void DisconnectFromRelay()
+        public static async Task DisconnectFromRelay()
         {
 #if ANDROID
             MainActivity.DisconnectFromRelay();
 #elif WINDOWS
-            //TODO: connect windows
+            await WireguardManagerWindows.DisconnectFromRelay();
 #endif
         }
 
