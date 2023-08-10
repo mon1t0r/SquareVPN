@@ -29,6 +29,11 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+		<AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+		<GenerateTestArtifacts>True</GenerateTestArtifacts>
+		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android33.0|AnyCPU'">
@@ -103,6 +108,11 @@
     <ProjectReference Include="..\WireguardTunnelAndroidBinding\WireguardTunnelAndroidBinding.csproj" />
   </ItemGroup>
 
+  <ItemGroup Condition="$(TargetFramework.Contains('-windows')) != false ">
+    <ProjectReference Include="..\VPNClient-WindowsTunnelDLL\VPNClient-WindowsTunnelDLL.csproj" />
+    <ProjectReference Include="..\VPNClient-WindowsVPNService\VPNClient-WindowsVPNService.csproj" />
+  </ItemGroup>
+
 	<ItemGroup>
 	  <Compile Update="Pages\ConnectPage.xaml.cs">
 	    <DependentUpon>ConnectPage.xaml</DependentUpon>
@@ -126,6 +136,12 @@
 
 	<ItemGroup>
 	  <Folder Include="Resources\Images\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Properties\launchSettings.json">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>

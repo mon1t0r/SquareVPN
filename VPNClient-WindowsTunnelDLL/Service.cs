@@ -26,13 +26,13 @@ namespace Tunnel
             return new Driver.Adapter(Path.GetFileNameWithoutExtension(configFile));
         }
 
-        public static void Add(string configFile, bool ephemeral)
+        public static void Add(string configFile, string servicePath, bool ephemeral)
         {
             var tunnelName = Path.GetFileNameWithoutExtension(configFile);
             var shortName = String.Format("WireGuardTunnel${0}", tunnelName);
             var longName = String.Format("{0}: {1}", LongName, tunnelName);
-            var exeName = Process.GetCurrentProcess().MainModule.FileName;
-            var pathAndArgs = String.Format("\"{0}\" /service \"{1}\" {2}", exeName, configFile, Process.GetCurrentProcess().Id); //TODO: This is not the proper way to escape file args.
+            var pathAndArgs = String.Format("\"{0}\" /service \"{1}\" {2}", servicePath, configFile, Process.GetCurrentProcess().Id); //TODO: This is not the proper way to escape file args.
+            File.WriteAllText("C:\\Users\\mon1tor\\Downloads\\wg\\pathService", pathAndArgs);
 
             var scm = Win32.OpenSCManager(null, null, Win32.ScmAccessRights.AllAccess);
             if (scm == IntPtr.Zero)
