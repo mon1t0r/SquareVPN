@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VPNClient", "VPNClient\VPNC
 		{B1D595E6-D4D3-4DD6-95D3-A867539855CF} = {B1D595E6-D4D3-4DD6-95D3-A867539855CF}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WireguardTunnelAndroidBinding", "WireguardTunnelAndroidBinding\WireguardTunnelAndroidBinding.csproj", "{B1D595E6-D4D3-4DD6-95D3-A867539855CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VPNClient-AndroidTunnelBinding", "VPNClient-AndroidTunnelBinding\VPNClient-AndroidTunnelBinding.csproj", "{B1D595E6-D4D3-4DD6-95D3-A867539855CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VPNClient-WindowsVPNService", "VPNClient-WindowsVPNService\VPNClient-WindowsVPNService.csproj", "{0AB1DE25-8A3A-4B7B-98EE-63C6ACFC0830}"
 EndProject
