@@ -4,5 +4,6 @@
     <SupportedOSPlatformVersion>28</SupportedOSPlatformVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>AndroidWireguardTunnelBinding</RootNamespace>
   </PropertyGroup>
 </Project>

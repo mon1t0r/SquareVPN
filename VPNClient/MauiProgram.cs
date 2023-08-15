@@ -3,6 +3,7 @@ using Microsoft.Maui.LifecycleEvents;
 #if WINDOWS
 using WinUIEx;
 #elif ANDROID
+using VPNClient.Pages.Elements;
 using VPNClient.Platforms.Android.UI;
 #endif
 

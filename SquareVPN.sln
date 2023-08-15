@@ -22,9 +22,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VPNClient", "VPNClient\VPNC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VPNClient-AndroidTunnelBinding", "VPNClient-AndroidTunnelBinding\VPNClient-AndroidTunnelBinding.csproj", "{B1D595E6-D4D3-4DD6-95D3-A867539855CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VPNClient-WindowsVPNService", "VPNClient-WindowsVPNService\VPNClient-WindowsVPNService.csproj", "{0AB1DE25-8A3A-4B7B-98EE-63C6ACFC0830}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VPNClient-WindowsVPNService", "VPNClient-WindowsVPNService\VPNClient-WindowsVPNService.csproj", "{0AB1DE25-8A3A-4B7B-98EE-63C6ACFC0830}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VPNClient-WindowsTunnelDLL", "VPNClient-WindowsTunnelDLL\VPNClient-WindowsTunnelDLL.csproj", "{A31D9A69-1603-4A73-90A9-98A73EC1E1B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VPNClient-WindowsTunnelDLL", "VPNClient-WindowsTunnelDLL\VPNClient-WindowsTunnelDLL.csproj", "{A31D9A69-1603-4A73-90A9-98A73EC1E1B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
