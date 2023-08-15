@@ -10,7 +10,6 @@ namespace VPNClient_WindowsVPNService
         {
             if (args.Length == 3 && args[0] == "/service")
             {
-                File.WriteAllText("C:\\Users\\mon1tor\\Downloads\\wg\\realargs", args[1]);
                 var t = new Thread(() =>
                 {
                     try
@@ -23,9 +22,8 @@ namespace VPNClient_WindowsVPNService
                     Service.Remove(args[1], false);
                 });
                 t.Start();
-                bool res = Service.Run(args[1]);
+                Service.Run(args[1]);
                 t.Interrupt();
-                File.WriteAllText("C:\\Users\\mon1tor\\Downloads\\wg\\exit", res.ToString() + " " + Marshal.GetLastPInvokeErrorMessage());
             }
         }
     }
