@@ -3,13 +3,9 @@
  * Copyright (C) 2019-2022 WireGuard LLC. All Rights Reserved.
  */
 
-using System;
-using System.IO;
-using System.IO.Pipes;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Threading;
 
 namespace Tunnel
 {

@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Maui;
+using Microsoft.Maui.LifecycleEvents;
 using VPNClient.Pages.Elements;
+using WinUIEx;
 #if ANDROID
 using VPNClient.Platforms.Android.UI;
 #endif
@@ -25,6 +27,19 @@ namespace VPNClient
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+#if WINDOWS
+            builder.ConfigureLifecycleEvents(events =>
+            {
+                events.AddWindows(wndLifeCycleBuilder =>
+                {
+                    wndLifeCycleBuilder.OnWindowCreated(window =>
+                    {
+                        window.CenterOnScreen(450, 780);
+                    });
+                });
+            });
+#endif
 
             return builder.Build();
         }

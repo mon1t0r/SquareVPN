@@ -34,6 +34,7 @@
 		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+		<AssemblyName>SquareVPN</AssemblyName>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android33.0|AnyCPU'">
@@ -95,7 +96,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="5.3.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	  <PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
 	</ItemGroup>
@@ -142,6 +143,12 @@
 	  <None Update="Properties\launchSettings.json">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-windows10.0.19041.0'">
+	  <PackageReference Include="WinUIEx">
+	    <Version>2.1.0</Version>
+	  </PackageReference>
 	</ItemGroup>
 
 </Project>

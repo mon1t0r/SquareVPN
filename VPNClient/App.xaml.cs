@@ -1,4 +1,5 @@
 ﻿using VPNClient.Classes;
+using VPNClient.Classes.Utils;
 using VPNClient.Pages;
 
 namespace VPNClient
@@ -41,6 +42,15 @@ namespace VPNClient
                 MainPage = new AppShell();
             else
                 MainPage = new LoginPage();
+        }
+
+        protected override Window CreateWindow(IActivationState activationState)
+        {
+            var window = base.CreateWindow(activationState);
+#if WINDOWS
+            window.Title = Constants.AppName;
+#endif
+            return window;
         }
     }
 }
