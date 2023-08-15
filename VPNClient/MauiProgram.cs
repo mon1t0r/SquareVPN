@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Maui.LifecycleEvents;
-using VPNClient.Pages.Elements;
+#if WINDOWS
 using WinUIEx;
-#if ANDROID
+#elif ANDROID
 using VPNClient.Platforms.Android.UI;
 #endif
 
