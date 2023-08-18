@@ -10,8 +10,9 @@ namespace VPNClient
 {
     public class WireguardManagerWindows
     {
+        private static readonly string AppDataDirectory = Path.Combine(FileSystem.Current.AppDataDirectory, "SquareVPN");
         private static readonly string BaseDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-        private static readonly string TempDirectory = Path.Combine(BaseDirectory, "Temp");
+        private static readonly string TempDirectory = Path.Combine(AppDataDirectory, "Temp");
         private static readonly string ServiceFilePath = Path.Combine(BaseDirectory, "VPNClient-WindowsVPNService.exe");
         private static readonly string ConfigFilePath = Path.Combine(TempDirectory, "SquareVPN.conf");
 

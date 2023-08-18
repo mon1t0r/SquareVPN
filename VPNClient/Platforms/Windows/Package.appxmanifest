@@ -6,7 +6,7 @@
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   IgnorableNamespaces="uap rescap">
 
-  <Identity Name="square-vpn" Publisher="CN=mon1tor" Version="1.0.0.0" />
+  <Identity Name="square-vpn" Publisher="CN=mon1tor" Version="1.0.2.0" />
 
   <mp:PhoneIdentity PhoneProductId="78E47FC2-F8EF-46BB-93B6-FCB88EE2E36C" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
